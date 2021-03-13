@@ -83,6 +83,7 @@ module.exports = configure(function (/* ctx */) {
         brand: {
           primary: "#024da2",
           secondary: "#ffdc00",
+          positive: "#388e3c",
         },
       },
 

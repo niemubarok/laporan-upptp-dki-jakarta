@@ -21,17 +21,21 @@
       animated
       done-color="green-10"
       keep-alive
+      :contracted="$q.screen.lt.sm"
     >
       <q-step
         :name="1"
         title="Detail Surat"
-        caption="Lengkapi detail surat berikut"
         icon="assignment"
         :done="step > 1"
       >
+        <!-- caption="Lengkapi detail surat berikut" -->
 
         <div class="row">
-          <div class="col-4">
+          <div
+            class="q-gutter-sm q-mr-md"
+            :class="$q.screen.lt.sm ? 'full-width':''"
+          >
 
             <!-- no surat -->
             <q-input
@@ -40,7 +44,7 @@
               v-model="surat.noSurat"
               label="Nomor Surat"
               dense
-              class="q-mt-sm"
+              class="q-mt-sm "
               autofocus
             >
               <template v-slot:prepend>
@@ -112,18 +116,25 @@
               v-model="surat.kelurahan"
               label="Kelurahan PMPTSP"
               dense
-              class="q-mt-sm"
+              class="q-mt-sm q-ml-sm"
+              :class="$q.screen.lt.sm ? 'q-mb-sm':''"
             >
               <template v-slot:prepend>
                 <q-icon name="home_work" />
               </template>
             </q-input>
           </div>
-          <div class="col q-ml-md">
+
+          <div
+            class="q-gutter-sm q-mr-lg"
+            :class="$q.screen.lt.sm ? 'full-width':''"
+          >
             <!-- no spipp -->
             <q-input
               clearable
-              standout="bg-blue-10 text-yellow-14"
+              standout="
+            bg-blue-10
+            text-yellow-14"
               v-model="surat.noSPIPP"
               label="No. Surat  Permohonan Izin Penebangan Pohon"
               dense
@@ -184,14 +195,17 @@
               v-model="surat.namaKaUnit"
               label="Nama Ka Unit"
               dense
-              class="q-mt-sm"
+              class="q-mt-sm q-mb-md"
             >
               <template v-slot:prepend>
                 <q-icon name="account_box" />
               </template>
             </q-input>
           </div>
-          <div class="col-4 q-ml-md">
+          <div
+            class="q-gutter-sm"
+            :class="$q.screen.lt.sm ? 'full-width q-ml-md':''"
+          >
 
             <!-- lokasiPohon -->
             <q-input
@@ -216,14 +230,14 @@
       <q-step
         :name="2"
         title="Detail Lampiran"
-        caption="Masukan detail laporan"
         icon="create_new_folder"
         :done="step > 2"
       >
-
-        <!-- component step2 -->
-        <!-- :namaPohon="laporan.namaPohon"  -->
-        <step-2 />
+        <!-- caption="Masukan detail laporan" -->
+        <step-2
+          @tambah-lampiran="tambahLampiran"
+          @hapus-lampiran="hapusLampiran"
+        />
 
       </q-step>
 
@@ -233,6 +247,10 @@
         caption="Download Laporan"
         icon="download"
       >
+
+        <q-btn @click="submitSurat">
+          submit
+        </q-btn>
         <!-- <step-3>
         </step-3> -->
       </q-step>
@@ -240,7 +258,7 @@
       <template v-slot:navigation>
         <q-stepper-navigation>
           <div class="column">
-            <div class="col self-end text-secondary">
+            <div class="q-gutter-sm self-end text-secondary">
               <!-- @click="next()" -->
               <!-- , submitSurat() -->
               <q-btn
@@ -265,6 +283,18 @@
                 class="q-ml-sm"
               />
             </div>
+
+            <!-- v-for="letter in surat"
+              :key="letter" -->
+            <div>
+              <!-- <template v-for="report in letter">
+              {{letter}}
+              </template> -->
+
+              <!-- {{surat.laporan}} -->
+
+            </div>
+
           </div>
         </q-stepper-navigation>
       </template>
@@ -276,7 +306,7 @@
 </template>
 <script>
 import { useQuasar } from 'quasar'
-import { reactive, ref, onMounted } from 'vue'
+import { reactive, ref, onBeforeMount } from 'vue'
 import { createSurat } from 'src/db/surat'
 import { db } from "src/firebase";
 import Step2 from '../components/Step2'
@@ -290,25 +320,9 @@ export default {
   setup () {
 
     const $q = useQuasar()
-    const laporan_id = ref()
+    // const laporan_id = ''
 
-    const laporan = reactive({
-      namaPohon: '',
-      namaLatin: '',
-      daun: '',
-      batang: '',
-      akar: '',
-      kecepatanAngin: '',
-      lokasi: '',
-      zona: '',
-      segmen: '',
-      layer1: '',
-      layer2: '',
-      hasil: '',
-      imagelayer1: '',
-    })
-
-    // {
+    // const laporan = reactive({
     //   namaPohon: '',
     //   namaLatin: '',
     //   daun: '',
@@ -318,14 +332,22 @@ export default {
     //   lokasi: '',
     //   zona: '',
     //   segmen: '',
-    //   layer1: '',
-    //   layer2: '',
-    //   hasil: '',
-    //   imagelayer1: '',
-    // }
+    //   layer1: {
+    //     image: ref(null),
+    //     diameter: null,
+    //     tinggi_batang: null,
+    //     lingkaran_batang: null
+    //   },
+    //   layer2: {
+    //     image: ref(null),
+    //     diameter: null,
+    //     tinggi_batang: null,
+    //     lingkaran_batang: null
+    //   }
+    // })
 
     const surat = reactive({
-      surat_id: 0,
+      surat_id: null,
       noSurat: '',
       tglSurat: '',
       kelurahan: '',
@@ -334,53 +356,61 @@ export default {
       alamatPohon: '',
       tanggalTerimaSurat: '',
       jumlahLampiran: '',
-      laporan: [{
-        namaPohon: '',
-        namaLatin: '',
-        daun: '',
-        batang: '',
-        akar: '',
-        kecepatanAngin: '',
-        lokasi: '',
-        zona: '',
-        segmen: '',
-        layer1: '',
-        layer2: '',
-        hasil: '',
-        imagelayer1: ''
-      }]
+      laporan: [],
+      hasil: '',
+      kesimpulan: ''
     })
 
     const lampiran = ref([])
 
-    const tambahLampiran = async () => {
-      lampiran.value.push({ ...laporan })
-      surat.laporan.push({ ...laporan })
-      console.log(surat.laporan);
+    // menambahkan lampiran ke dalam array untuk nanti dipush ke firebase
+    const tambahLampiran = async (event) => {
+      // lampiran.value.push({ ...laporan })
+      surat.laporan.push({ ...event })
+    }
+
+    const hapusLampiran = async (event) => {
+      surat.laporan.splice(event, 1)
+      console.log(event);
     }
 
 
-
+    // ambil id terakhir
     const currentId = () => {
       const id = db.collection('surat').doc('count')
         .onSnapshot((querySnapshot => {
 
           const data = {
 
-            surat_id: querySnapshot.data().surat_id + 1
+            surat_id: querySnapshot.data().surat_id + 1,
+            laporan_id: querySnapshot.data().laporan_id + 1,
           }
           surat.surat_id = data.surat_id
+          // laporan_id = data.laporan_id
+          console.log(surat.surat_id);
         }))
-      return id
+      // return id
     }
 
+    // setTimeout(() => {
+      console.log(surat.surat_id);
 
+    // }, 3000
+
+
+    // )
+
+
+    // console.log(laporan_id);
 
     const submitSurat = async () => {
       try {
         await createSurat({ ...surat })
         db.collection('surat').doc('count').update({
-          surat_id: surat.surat_id
+          surat_id: surat.surat_id,
+          // laporan_id: laporan_id.value
+
+          
         }).then(() => {
           console.log('sukses');
         }).catch((e) => {
@@ -423,13 +453,14 @@ export default {
 
     }
 
-    onMounted(() => {
+    onBeforeMount(() => {
       currentId()
     })
 
     return {
       lampiran,
-      laporan,
+      // laporan,
+      hapusLampiran,
       tambahLampiran,
       surat,
       onSubmit,

@@ -19,23 +19,9 @@ const config = {
 
 const firebaseApp = firebase.initializeApp(config);
 const db = firebaseApp.firestore();
+const storage = firebase.storage();
 
 const suratCollection = db.collection("surat");
 const laporanCollection = db.collection("laporan");
 
-// const test = db.doc("surat/DrANOcjxGoMEB3Pw2ERz");
-
-export const useLoadSurat = () => {
-  const surat = ref([]);
-  const close = suratCollection.onSnapshot((snapshot) => {
-    surat.value = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-  });
-  // console.log(doc);
-  onUnmounted(close);
-  return surat;
-};
-
-export { db, suratCollection, laporanCollection };
+export { config, db, storage, suratCollection, laporanCollection };

@@ -1,70 +1,75 @@
 <template>
-  <q-page>
+  <image-handler
+    layer="Layer 1"
+    maxWidth="max-width:200px"
+    @on-upload="onUpload"
+  />
 
-    <div style="width:500px; margin:auto">
-      <q-card class="q-pa-xl q-mt-xl">
+  <p>Layer 1: {{tes.layer1.image}}</p>
 
-        {{surat.nomor}}
+  <image-handler
+    layer="Layer 2"
+    maxWidth="max-width:200px"
+    @on-upload="onUpload"
+  />
+  <p>Layer 1 :{{tes.layer2.image}}</p>
 
-        <form>
-          <q-input v-model="surat.nomor"></q-input>
-          <q-input v-model="surat.tanggal"></q-input>
-        </form>
-        <q-btn @click.prevent="onSubmit()">create</q-btn>
-      </q-card>
-    </div>
-  </q-page>
+  <image-handler
+    layer="Hasil"
+    maxWidth="max-width:200px"
+    @on-upload="onUpload"
+  />
 
+  {{tes.hasil}}
+  
 </template>
 
 <script>
-// import { detailSurat } from 'src/store/surat/getters'; 
-import { reactive } from 'vue'
-import { createSurat } from 'src/db/surat'
-
+import ImageHandler from './ImageHandler.vue'
+import {reactive } from 'vue'
 export default {
-  setup () {
-    const surat = reactive({
-      nomor: '',
-      tanggal: ''
+  components: {
+    ImageHandler
+
+  },
+  setup (props) {
+
+    const tes = reactive({
+      layer1: {
+        image: []
+      },
+      layer2: {
+        image: []
+      },
+      hasil: []
     })
+    const onUpload = (event) => {
+        if (event.layer == 'Layer 1'){
+          tes.layer1.image.push(event.image[0])
 
-    const onSubmit = async () => {
-      try {
-        await createSurat({ ...surat })
-        surat.nomor = ''
-        surat.tanggal = ''
-      } catch (error) {
-        console.log(error);
-      }
+        }else if(event.layer == 'Layer 2') {
+          tes.layer2.image.push(event.image[0])
 
+        }else{
+          tes.hasil.push(event.image[0])
 
+        }
+      // console.log(event[0]);
+      console.log('event.layer[0]'+event.layer[0]);
+      console.log('event.layer[1]'+event.layer[1]);
+      console.log('event.layer'+event.layer);
+      // console.log('tes.layer 1:' + tes.layer1.image);
+      // console.log('tes.layer 2:' + tes.layer2.image);
+      // console.log('tes.hasil:' + tes.hasil);
     }
 
     return {
-      surat,
-      onSubmit
+      onUpload,
+      tes
     }
   }
 
 }
-
-  // setup () {
-
-  //   // const store = useStore()
-
-  //   const fetchSurat = computed(() => {
-  //     // store.dispatch('surat/fetchSurat')
-  //     // console.log(store.state.surat);
-  //     root.$store.dispatch('surat/fetchSurat')
-  //   })
-  //   console.log(fetchSurat);
-
-  //   return {
-  //     fetchSurat,
-  //   }
-  // }
-
 </script>
 
 <style>

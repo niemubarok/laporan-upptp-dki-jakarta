@@ -1,14 +1,16 @@
 <template>
   <div>
     <q-stepper
+      vertical
       v-model="step"
       flat
-      vertical
       color="primary"
       animated
       ref="stepper"
-      style="margin-top:-40px;"
+      style="margin-top:-40px;margin-left:-20px;"
       header-nav
+      alternative-labels
+      
     >
 
       <!-- lampiran 1 -->
@@ -22,19 +24,28 @@
           :title="'Lampiran ' + (index +1)"
           icon="attachment"
           :done="step > (index +1)"
+          
         >
+          <!-- prefix="1" -->
           <div
-            class="row"
-            style="margin-top:-20px;"
+            class="row items-center"
+            :style="[$q.screen.gt.xs ? 'padding-left:100px; '
+            : '' , $q.screen.lt.sm ? 'margin-left:-40px; '
+            : '' ]"
           >
-            <div class="col-4">
+            <!-- style="margin-left:-120px" -->
+            <div
+              class="
+            gt-xl"
+              :class="$q.screen.lt.sm ? 'full-width':''"
+            >
               <!-- style="margin-top:-50px;" -->
 
               <!-- namaPohon -->
               <q-input
                 clearable
                 standout="bg-blue-10 text-yellow-14"
-                v-model="namaPohon"
+                v-model="laporan.namaPohon"
                 label="Nama Pohon"
                 dense
                 class="q-mt-sm"
@@ -48,7 +59,7 @@
               <!-- namaLatin  -->
               <q-input
                 standout="bg-blue-10 text-yellow-14"
-                v-model="namaLatin"
+                v-model="laporan.namaLatin"
                 label="Nama Latin"
                 dense
                 class="q-mt-sm"
@@ -63,7 +74,7 @@
               <q-input
                 clearable
                 standout="bg-blue-10 text-yellow-14"
-                v-model="daun"
+                v-model="laporan.daun"
                 label="Daun"
                 dense
                 class="q-mt-sm"
@@ -77,7 +88,7 @@
               <q-input
                 clearable
                 standout="bg-blue-10 text-yellow-14"
-                v-model="batang"
+                v-model="laporan.batang"
                 label="Batang"
                 dense
                 class="q-mt-sm"
@@ -91,7 +102,7 @@
               <q-input
                 clearable
                 standout="bg-blue-10 text-yellow-14"
-                v-model="akar"
+                v-model="laporan.akar"
                 label="Akar"
                 dense
                 class="q-mt-sm"
@@ -105,7 +116,7 @@
               <q-input
                 clearable
                 standout="bg-blue-10 text-yellow-14"
-                v-model="kecepatanAngin"
+                v-model="laporan.kecepatanAngin"
                 label="Kecepatan Angin"
                 dense
                 class="q-mt-sm"
@@ -120,7 +131,7 @@
                 clearable
                 filled
                 autogrow
-                v-model="lokasi"
+                v-model="laporan.lokasi"
                 label="Lokasi Pohon"
                 dense
                 class="q-mt-sm"
@@ -135,7 +146,7 @@
               <q-input
                 clearable
                 standout="bg-blue-10 text-yellow-14"
-                v-model="segmen"
+                v-model="laporan.segmen"
                 label="Segmen"
                 dense
                 class="q-mt-sm"
@@ -149,7 +160,7 @@
               <q-input
                 clearable
                 standout="bg-blue-10 text-yellow-14"
-                v-model="zona"
+                v-model="laporan.zona"
                 label="Zona"
                 dense
                 class="q-mt-sm"
@@ -162,7 +173,10 @@
             </div>
 
             <!-- layer1 -->
-            <div class="col q-ml-md">
+            <div
+              class="gt-xl q-ml-lg"
+              :class="$q.screen.lt.sm ? 'full-width q-mt-sm':''"
+            >
 
               <div class="text-h6 text-primary">
                 <div class="row">
@@ -173,22 +187,31 @@
               </div>
               <q-separator class="q-mb-sm" />
 
-              <q-file
+              <!-- <q-file
                 color="teal"
                 filled
-                v-model="imagelayer1"
+                v-model="laporan.layer1.image"
                 label="Pilih Gambar"
               >
                 <template v-slot:prepend>
                   <q-icon name="cloud_upload" />
                 </template>
-              </q-file>
+              </q-file> -->
+
+              <!-- Image Uploader Layer 1 -->
+              <div>
+                <image-handler
+                  layer="Layer 1"
+                  @on-upload="onUpload"
+                  maxWidth="max-width:200px"
+                />
+              </div>
 
               <!-- diameter-->
               <q-input
                 clearable
                 standout="bg-blue-10 text-yellow-14"
-                v-model="layer1.diameter"
+                v-model="laporan.layer1.diameter"
                 label="Diameter"
                 dense
                 class="q-mt-sm"
@@ -202,7 +225,7 @@
               <q-input
                 clearable
                 standout="bg-blue-10 text-yellow-14"
-                v-model="layer1.tinggi_batang"
+                v-model="laporan.layer1.tinggi_batang"
                 label="Tinggi Batang"
                 dense
                 class="q-mt-sm"
@@ -216,7 +239,7 @@
               <q-input
                 clearable
                 standout="bg-blue-10 text-yellow-14"
-                v-model="layer1.lingkaran_batang"
+                v-model="laporan.layer1.lingkaran_batang"
                 label="Lingkaran Batang"
                 dense
                 class="q-mt-sm"
@@ -226,10 +249,28 @@
                 </template>
               </q-input>
 
+              <q-separator class="q-mt-sm" />
+
+              <!-- Hasil -->
+              <div
+                class="q-mt-sm"
+                v-if="$q.screen.gt.xs"
+              >
+
+                <image-handler
+                  layer="Hasil"
+                  @on-upload="onUpload"
+                  maxWidth="max-width:200px"
+                />
+              </div>
+
             </div>
 
-            <div class="col-4 q-ml-md">
-              <!-- layer2 -->
+            <!-- layer2 -->
+            <div
+              class="gt-xl q-ml-lg"
+              :class="$q.screen.lt.sm ? 'full-width' : ''"
+            >
               <div class="text-h6 text-primary">
                 <div class="row">
                   <div style="margin-right:10px;">
@@ -240,22 +281,20 @@
               </div>
               <q-separator class="q-mb-sm" />
 
-              <q-file
-                color="teal"
-                filled
-                v-model="imagelayer1"
-                label="Pilih Gambar"
-              >
-                <template v-slot:prepend>
-                  <q-icon name="cloud_upload" />
-                </template>
-              </q-file>
+              <!-- Image uploader Layer 2 -->
+              <div>
+                <image-handler
+                  layer="Layer 2"
+                  @on-upload="onUpload"
+                  maxWidth="max-width:200px"
+                />
+              </div>
 
               <!-- diameter-->
               <q-input
                 clearable
                 standout="bg-blue-10 text-yellow-14"
-                v-model="layer1.diameter"
+                v-model="laporan.layer2.diameter"
                 label="Diameter"
                 dense
                 class="q-mt-sm"
@@ -269,7 +308,7 @@
               <q-input
                 clearable
                 standout="bg-blue-10 text-yellow-14"
-                v-model="layer1.tinggi_batang"
+                v-model="laporan.layer2.tinggi_batang"
                 label="Tinggi Batang"
                 dense
                 class="q-mt-sm"
@@ -283,7 +322,7 @@
               <q-input
                 clearable
                 standout="bg-blue-10 text-yellow-14"
-                v-model="layer1.lingkaran_batang"
+                v-model="laporan.layer2.lingkaran_batang"
                 label="Lingkaran Batang"
                 dense
                 class="q-mt-sm"
@@ -293,45 +332,58 @@
                 </template>
               </q-input>
 
+              <q-separator class="q-mt-sm" />
+              <div
+                class="q-mt-sm"
+                v-if="$q.screen.lt.sm"
+              >
+
+                <image-handler
+                  layer="Hasil"
+                  @on-upload="onUpload"
+                  maxWidth="max-width:200px"
+                />
+              </div>
+              <!-- Kesimpulan-->
+              <div class="gt-xl">
+                <q-input
+                  clearable
+                  autogrow
+                  filled
+                  v-model="laporan.kesimpulan"
+                  label="Kesimpulan"
+                  class="q-mt-sm"
+                  type="textarea"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="fact_check" />
+                  </template>
+                </q-input>
+
+                <!-- arahan-->
+                <div class="gt-xl">
+                  <q-input
+                    clearable
+                    autogrow
+                    filled
+                    v-model="laporan.arahan"
+                    label="Instruksi / Arahan"
+                    class="q-mt-sm"
+                    type="textarea"
+                  >
+                    <template v-slot:prepend>
+                      <q-icon name="wb_incandescent" />
+                    </template>
+                  </q-input>
+                </div>
+              </div>
+
             </div>
 
           </div>
 
-          <div
-            class="row justify-end q-ml-sm"
-            style="margin-top:-180px;"
-          >
-            <!-- Kesimpulan-->
-            <div class="col-4 q-pa-sm q-pr-md">
-              <q-input
-                clearable
-                filled
-                v-model="lokasi"
-                label="Kesimpulan"
-                class="q-mt-sm"
-                type="textarea"
-              >
-                <template v-slot:prepend>
-                  <q-icon name="fact_check" />
-                </template>
-              </q-input>
-            </div>
+          <div class="row justify-start  ">
 
-            <!-- arahan-->
-            <div class="col-4 q-mt-sm">
-              <q-input
-                clearable
-                filled
-                v-model="lokasi"
-                label="Instruksi / Arahan"
-                class="q-mt-sm"
-                type="textarea"
-              >
-                <template v-slot:prepend>
-                  <q-icon name="wb_incandescent" />
-                </template>
-              </q-input>
-            </div>
           </div>
 
           <q-stepper-navigation>
@@ -374,7 +426,11 @@
                   <q-icon name="delete">
                   </q-icon>
                   Hapus Lampiran {{(index + 1)}}
+
                 </span>
+                <!-- {{laporan}}
+
+                {{nama_pohon}} -->
                 <!-- label="Lampiran Selanjutnya" -->
 
               </div>
@@ -386,6 +442,7 @@
                     color="orange-14"
                     :label="$q.screen.lt.md || $q.screen.lt.sm  ? '' : 'Tambah Lampiran'"
                     icon="add"
+                    rounded
                   />
                 </div>
 
@@ -395,7 +452,7 @@
 
           </q-stepper-navigation>
 
-          <q-separator class="q-mt-md" />
+          <q-separator class="q-mt-md " />
         </q-step>
 
       </div>
@@ -406,42 +463,72 @@
 </template>
 
 <script>
-import { ref } from "vue";
-import { useQuasar } from 'quasar'
+import { ref, reactive } from "vue";
+import { storage } from "src/firebase";
+import ImageHandler from './ImageHandler.vue';
 
 export default {
-  // props: [nama_pohon],
-  setup () {
-    const $q = useQuasar()
-    const lampiran = ref([])
+  components: { ImageHandler },
+
+  setup (props, { emit }) {
     const jumlahLampiran = ref([1])
     const step = ref(1)
-    const namaPohon = ref('')
-    const namaLatin = ref('')
-    const daun = ref('')
-    const batang = ref('')
-    const akar = ref('')
-    const kecepatanAngin = ref('')
-    const lokasi = ref('')
-    const zona = ref('')
-    const segmen = ref('')
-    const imagelayer1 = ref(null)
-    const layer1 = {
-      image: ref(null),
-      diameter: null,
-      tinggi_batang: null,
-      lingkaran_batang: null
+    // const storageBucketURL = config.storageBucket
+    const laporan = reactive({
+      namaPohon: '',
+      namaLatin: '',
+      daun: '',
+      batang: '',
+      akar: '',
+      kecepatanAngin: '',
+      lokasi: '',
+      zona: '',
+      segmen: '',
+      layer1: {
+        image: [],
+        diameter: null,
+        tinggi_batang: null,
+        lingkaran_batang: null
+      },
+      layer2: {
+        image: [],
+        diameter: null,
+        tinggi_batang: null,
+        lingkaran_batang: null
+      },
+      hasil: [],
+      kesimpulan: '',
+      arahan: ''
+    })
+
+    const imageUploadURL = async () => {
+      storage.child(file).getDownloadURL().then((url) => {
+        laporan.layer1.image.push(url)
+      })
+
+    }
+
+    const onUpload = (event) => {
+      if (event.layer == 'Layer 1'){
+          laporan.layer1.image.push(event.image[0])
+
+        }else if(event.layer == 'Layer 2') {
+          laporan.layer2.image.push(event.image[0])
+
+        }else{
+          laporan.hasil.push(event.image[0])
+
+        }
+    }
+
+    const tambahLampiran = () => {
+      step.value = step.value + 1
+      jumlahLampiran.value.push(jumlahLampiran.value.length + 1)
+      emit('tambah-lampiran', laporan)
+
     }
 
     const backButtonPressed = ref(false)
-    const layer2 = {
-      image: ref(null),
-      diameter: '',
-      tinggi_batang: 0,
-      lingkaran_batang: 0
-    }
-
-    const hasil = ref('')
 
     const nextLampiran = () => {
       step.value = step.value + 1
@@ -450,20 +537,17 @@ export default {
     const currentLampiran = () => {
       step.value
     }
+
     const backButton = () => {
       step.value = step.value - 1
       backButtonPressed.value = true
     }
-    const tambahLampiran = () => {
-      step.value = step.value + 1
-      jumlahLampiran.value.push(jumlahLampiran.value.length + 1)
-      // console.log(jumlahLampiran.value.length);
-      // console.log(step.value);
 
-    }
 
     const hapusLampiran = (index) => {
       jumlahLampiran.value.splice(index, 1)
+      // laporan.splice(index, 1)
+      emit('hapus-lampiran', index)
       if (step.value >= jumlahLampiran.value.length) {
         backButton()
         console.log('backbutton');
@@ -471,26 +555,15 @@ export default {
     }
 
     return {
+      onUpload,
+      // storageBucketURL,
       hapusLampiran,
       nextLampiran,
       backButtonPressed,
       backButton,
       jumlahLampiran,
-      lampiran,
+      laporan,
       tambahLampiran,
-      namaPohon,
-      namaLatin,
-      daun,
-      batang,
-      akar,
-      kecepatanAngin,
-      lokasi,
-      zona,
-      segmen,
-      layer1,
-      layer2,
-      hasil,
-      imagelayer1,
       step
 
     }
