@@ -17,6 +17,7 @@ const routes = [
   {
     path: "/surat/create",
     component: () => import("layouts/MainLayout.vue"),
+    // component: () => import("pages/CreateSurat.vue"),
     children: [{ path: "", component: () => import("pages/CreateSurat.vue") }],
   },
   {

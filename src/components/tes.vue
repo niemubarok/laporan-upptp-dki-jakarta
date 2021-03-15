@@ -1,71 +1,60 @@
 <template>
-  <image-handler
-    layer="Layer 1"
-    maxWidth="max-width:200px"
-    @on-upload="onUpload"
-  />
+  <div>
+    <transition
+      appear
+      @before-enter="beforeEnter"
+      @enter="enter"
+    >
 
-  <p>Layer 1: {{tes.layer1.image}}</p>
+      <h2>tes</h2>
 
-  <image-handler
-    layer="Layer 2"
-    maxWidth="max-width:200px"
-    @on-upload="onUpload"
-  />
-  <p>Layer 1 :{{tes.layer2.image}}</p>
+    </transition>
 
-  <image-handler
-    layer="Hasil"
-    maxWidth="max-width:200px"
-    @on-upload="onUpload"
-  />
+    <q-input
+      type="date"
+      v-model="date"
+      placeholder="select date"
+    />
 
-  {{tes.hasil}}
-  
+    {{state.miniState}}
+
+    <q-btn
+      @click="state.miniState = !state.miniState "
+      label="minState"
+    />
+  </div>
 </template>
 
 <script>
-import ImageHandler from './ImageHandler.vue'
-import {reactive } from 'vue'
+import gsap from 'gsap'
+import ComponentState from '../global/ComponentState'
+
 export default {
-  components: {
-    ImageHandler
+  setup () {
+    const { state } = ComponentState
+    const date = ''
+    const beforeEnter = (el) => {
+      console.log('initial state');
+      el.style.transform = 'translateY(-60px)'
+      el.style.opacity = 0
 
-  },
-  setup (props) {
-
-    const tes = reactive({
-      layer1: {
-        image: []
-      },
-      layer2: {
-        image: []
-      },
-      hasil: []
-    })
-    const onUpload = (event) => {
-        if (event.layer == 'Layer 1'){
-          tes.layer1.image.push(event.image[0])
-
-        }else if(event.layer == 'Layer 2') {
-          tes.layer2.image.push(event.image[0])
-
-        }else{
-          tes.hasil.push(event.image[0])
-
-        }
-      // console.log(event[0]);
-      console.log('event.layer[0]'+event.layer[0]);
-      console.log('event.layer[1]'+event.layer[1]);
-      console.log('event.layer'+event.layer);
-      // console.log('tes.layer 1:' + tes.layer1.image);
-      // console.log('tes.layer 2:' + tes.layer2.image);
-      // console.log('tes.hasil:' + tes.hasil);
     }
 
+    const enter = (el) => {
+      console.log('enter');
+      gsap.to(el, {
+        duration: 2,
+        y: 0,
+        opacity: 1
+      })
+
+    }
     return {
-      onUpload,
-      tes
+      beforeEnter,
+      enter,
+      date,
+      state
+
     }
   }
 

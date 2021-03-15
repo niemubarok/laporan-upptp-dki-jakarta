@@ -34,7 +34,7 @@
 
 <script>
 import { onMounted } from 'vue'
-import { dataSurat } from '../global_state/DataSurat'
+import { dataSurat } from '../global/DataSurat'
 
 export default {
   setup () {
