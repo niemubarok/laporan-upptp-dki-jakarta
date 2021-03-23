@@ -1,21 +1,27 @@
 <template>
+  <list-laporan-on-form />
+
+  <!-- <div>{{ tempLaporan[0]}}</div> -->
 
   <div
-    class="row"
-    style="margin-top:-35px;"
+    class="row "
+    style="margin-top:-25px;"
   >
     <!-- :style="$q.screen.lt.sm ? 'margin-left:5px':''" -->
+    <!-- <template v-for="modelLaporan in modelLaporan"> -->
     <q-card
       flat
       class="q-pa-sm  bg-grey-1"
       :class="$q.screen.lt.sm ? 'full-width q-mt-sm':''"
       style="width:50%"
     >
-      <!-- namaPohon -->
+      <!--
+        namaPohon
+        -->
       <q-input
         clearable
         standout="bg-blue-10 text-yellow-14"
-        v-model="laporan.namaPohon"
+        v-model="modelLaporan.namaPohon"
         label="Nama Pohon"
         dense
         class="q-mt-sm"
@@ -29,7 +35,7 @@
       <!-- namaLatin  -->
       <q-input
         standout="bg-blue-10 text-yellow-14"
-        v-model="laporan.namaLatin"
+        v-model="modelLaporan.namaLatin"
         label="Nama Latin"
         dense
         class="q-mt-sm"
@@ -44,7 +50,7 @@
       <q-input
         clearable
         standout="bg-blue-10 text-yellow-14"
-        v-model="laporan.daun"
+        v-model="modelLaporan.daun"
         label="Daun"
         dense
         class="q-mt-sm"
@@ -58,7 +64,7 @@
       <q-input
         clearable
         standout="bg-blue-10 text-yellow-14"
-        v-model="laporan.batang"
+        v-model="modelLaporan.batang"
         label="Batang"
         dense
         class="q-mt-sm"
@@ -81,7 +87,7 @@
       <q-input
         clearable
         standout="bg-blue-10 text-yellow-14"
-        v-model="laporan.akar"
+        v-model="modelLaporan.akar"
         label="Akar"
         dense
         class="q-mt-sm"
@@ -94,7 +100,7 @@
       <q-input
         clearable
         standout="bg-blue-10 text-yellow-14"
-        v-model="laporan.kecepatanAngin"
+        v-model="modelLaporan.kecepatanAngin"
         label="Kecepatan Angin"
         dense
         class="q-mt-sm"
@@ -109,7 +115,7 @@
         clearable
         filled
         autogrow
-        v-model="laporan.lokasi"
+        v-model="modelLaporan.lokasi"
         label="Lokasi Pohon"
         class="q-mt-sm"
         type="textarea"
@@ -124,7 +130,7 @@
       <q-input
         clearable
         standout="bg-blue-10 text-yellow-14"
-        v-model="laporan.segmen"
+        v-model="modelLaporan.segmen"
         label="Segmen"
         dense
         class="q-mt-sm"
@@ -138,7 +144,7 @@
       <q-input
         clearable
         standout="bg-blue-10 text-yellow-14"
-        v-model="laporan.zona"
+        v-model="modelLaporan.zona"
         label="Zona"
         dense
         class="q-mt-sm"
@@ -148,6 +154,9 @@
         </template>
       </q-input>
     </q-card>
+
+    <!-- <template v-for="(layer1, key) in temp.layer1" -->
+
     <!-- layer1 -->
     <q-card
       flat
@@ -167,9 +176,9 @@
 
       <!-- Image Uploader Layer 1 -->
       <div class="q-mt-sm">
+        <!-- @on-upload="onUpload" -->
         <image-handler
           layer="Layer 1"
-          @on-upload="onUpload"
           maxWidth="max-width:100%"
         />
       </div>
@@ -179,7 +188,7 @@
         dense
         clearable
         standout="bg-blue-10 text-yellow-14"
-        v-model="laporan.layer1.diameter"
+        v-model="modelLaporan.diameterLayer1"
         label="Diameter"
         class="q-mt-sm"
       >
@@ -188,12 +197,12 @@
         </template>
       </q-input>
 
-      <!-- tinggi_batang-->
+      <!-- tinggiBatang-->
       <q-input
         dense
         clearable
         standout="bg-blue-10 text-yellow-14"
-        v-model="laporan.layer1.tinggi_batang"
+        v-model="modelLaporan.tinggiBatangLayer1"
         label="Tinggi Batang"
         class="q-mt-sm"
       >
@@ -202,12 +211,12 @@
         </template>
       </q-input>
 
-      <!-- lingkaran_batang-->
+      <!-- lingkaranBatang-->
       <q-input
         dense
         clearable
         standout="bg-blue-10 text-yellow-14"
-        v-model="laporan.layer1.lingkaran_batang"
+        v-model="modelLaporan.lingkaranBatangLayer1"
         label="Lingkaran Batang"
         class="q-mt-sm"
       >
@@ -239,9 +248,9 @@
 
       <!-- Image uploader Layer 2 -->
       <div class="q-mt-sm">
+        <!-- @on-upload="onUpload" -->
         <image-handler
           layer="Layer 2"
-          @on-upload="onUpload"
           maxWidth="max-width:100%"
         />
       </div>
@@ -250,9 +259,9 @@
         v-if="$q.screen.lt.sm"
       >
 
+        <!-- @on-upload="onUpload" -->
         <image-handler
           layer="Hasil"
-          @on-upload="onUpload"
           maxWidth="max-width:200px"
         />
       </div>
@@ -262,7 +271,7 @@
         dense
         clearable
         standout="bg-blue-10 text-yellow-14"
-        v-model="laporan.layer2.diameter"
+        v-model="modelLaporan.diameterLayer2"
         label="Diameter"
         class="q-mt-sm"
       >
@@ -271,12 +280,12 @@
         </template>
       </q-input>
 
-      <!-- tinggi_batang-->
+      <!-- tinggiBatang-->
       <q-input
         dense
         clearable
         standout="bg-blue-10 text-yellow-14"
-        v-model="laporan.layer2.tinggi_batang"
+        v-model="modelLaporan.tinggiBatangLayer2"
         label="Tinggi Batang"
         class="q-mt-sm"
       >
@@ -285,12 +294,12 @@
         </template>
       </q-input>
 
-      <!-- lingkaran_batang-->
+      <!-- lingkaranBatang-->
       <q-input
         dense
         clearable
         standout="bg-blue-10 text-yellow-14"
-        v-model="laporan.layer2.lingkaran_batang"
+        v-model="modelLaporan.lingkaranBatangLayer2"
         label="Lingkaran Batang"
         class="q-mt-sm"
       >
@@ -318,9 +327,9 @@
       <q-separator class="q-mb-sm" />
 
       <div class="q-mt-sm">
+        <!-- @on-upload="onUpload" -->
         <image-handler
           layer="Hasil"
-          @on-upload="onUpload"
           maxWidth="max-width:100%"
         />
       </div>
@@ -330,7 +339,7 @@
         clearable
         autogrow
         filled
-        v-model="laporan.kesimpulan"
+        v-model="modelLaporan.kesimpulan"
         label="Kesimpulan"
         class="q-mt-sm"
         type="textarea"
@@ -345,7 +354,7 @@
         clearable
         filled
         autogrow
-        v-model="laporan.arahan"
+        v-model="modelLaporan.arahan"
         label="Instruksi / Arahan"
         class="q-mt-sm"
         type="textarea"
@@ -355,207 +364,70 @@
         </template>
       </q-input>
 
-      <q-page-sticky
+      <!-- <q-page-sticky
         position="bottom-right"
         :offset="[70, 70]"
+        class="z-top"
       >
-        <q-btn
-          @click="tambahLampiran()"
-          fab
-          icon="save"
-          color="orange-14"
-          class="bottom-right"
-          :class="$q.screen.lt.md ? 'fixed-bottom-left q-ml-xl q-mb-sm': ''"
-        >
-          <q-tooltip
-            anchor="top middle"
-            self="bottom middle"
-            class="bg-indigo"
-            :offset="[10, 10]"
-          >
-            SIMPAN LAMPIRAN
-          </q-tooltip>
-        </q-btn>
-      </q-page-sticky>
+      </q-page-sticky> -->
 
       <!-- tombol tambah lampiran -->
-
     </q-card>
+    <!-- </template> -->
 
   </div>
+
+  <q-btn
+    v-if="state.step > 1"
+    @click="[simpanLampiran(), state.seamless = true]"
+    fab
+    icon="save"
+    color="orange-14"
+    style="right:160px;"
+    class=" absolute-bottom-right z-top q-mb-sm"
+    :class="!$q.screen.lt.md ? 'absolute-bottom-right' : '' "
+  >
+    <q-tooltip
+      anchor="top middle"
+      self="bottom middle"
+      class="bg-indigo"
+      :offset="[10, 10]"
+    >
+      SIMPAN LAMPIRAN
+    </q-tooltip>
+  </q-btn>
 
 </template>
 
 <script>
-import { ref, reactive } from "vue";
-import { storage } from "src/firebase";
 import ImageHandler from './ImageHandler.vue';
+import DataSurat from '../global/DataSurat'
+import ListLaporanOnForm from 'components/modals/ListLaporanOnForm'
+import ComponentState from '../global/ComponentState'
 
 export default {
-  components: { ImageHandler },
+  components: { ListLaporanOnForm, ImageHandler },
 
-  props: ['scrollInfo'],
+  setup () {
 
-  setup (props, { emit }) {
-    // const scrollInfo = ref({})
-    const jumlahLampiran = ref([1])
-    const step = ref(1)
-    const sendToParent = []
-    const dataLaporan = ref([{
-      namaPohon: '',
-      namaLatin: '',
-      daun: '',
-      batang: '',
-      akar: '',
-      kecepatanAngin: '',
-      lokasi: '',
-      zona: '',
-      segmen: '',
-      layer1: {
-        image: [],
-        diameter: null,
-        tinggi_batang: null,
-        lingkaran_batang: null
-      },
-      layer2: {
-        image: [],
-        diameter: null,
-        tinggi_batang: null,
-        lingkaran_batang: null
-      },
-      hasil: [],
-      kesimpulan: '',
-      arahan: ''
-    }])
-    // const storageBucketURL = config.storageBucket
-    const laporan = reactive({
-      namaPohon: '',
-      namaLatin: '',
-      daun: '',
-      batang: '',
-      akar: '',
-      kecepatanAngin: '',
-      lokasi: '',
-      zona: '',
-      segmen: '',
-      layer1: {
-        image: [],
-        diameter: null,
-        tinggi_batang: null,
-        lingkaran_batang: null
-      },
-      layer2: {
-        image: [],
-        diameter: null,
-        tinggi_batang: null,
-        lingkaran_batang: null
-      },
-      hasil: [],
-      kesimpulan: '',
-      arahan: ''
-    })
-
-    //  console.log(props['scrollInfo']);
-
-    const imageUploadURL = async () => {
-      storage.child(file).getDownloadURL().then((url) => {
-        laporan.layer1.image.push(url)
-      })
-
-    }
-
-    const onUpload = (event) => {
-      if (event.layer == 'Layer 1') {
-        laporan.layer1.image.push(event.image[0])
-
-      } else if (event.layer == 'Layer 2') {
-        laporan.layer2.image.push(event.image[0])
-
-      } else {
-        laporan.hasil.push(event.image[0])
-
-      }
-    }
-
-    const tambahLampiran = () => {
-      step.value = step.value + 1
-      jumlahLampiran.value.push(jumlahLampiran.value.length + 1)
-      dataLaporan.value.push({ ...laporan })
-      sendToParent.push({ ...dataLaporan.value })
-      emit('tambah-lampiran', sendToParent)
-
-      // console.log('dataLaporan' + dataLaporan.value);
-      console.log('sendtoparent:' + sendToParent.value);
-
-      // laporan.namaPohon = ''
-      // laporan.namaLatin = ''
-      // laporan.daun = ''
-      // laporan.batang = ''
-      // laporan.akar = ''
-      // laporan.kecepatanAngin = ''
-      // laporan.lokasi = ''
-      // laporan.zona = ''
-      // laporan.segmen = ''
-      // laporan.layer1.image.splice(0, 1)
-      // laporan.layer1.diameter = null
-      // laporan.layer1.tinggi_batang = null
-      // laporan.layer1.lingkaran_batang = null
-      // laporan.layer2.image.splice(0, 1)
-      // laporan.layer2.diameter = null
-      // laporan.layer2.tinggi_batang = null
-      // laporan.layer2.lingkaran_batang = null
-      // laporan.hasil.splice(0, 1)
-      // laporan.kesimpulan = ''
-      // laporan.arahan = ''
-
-
-    }
-
-    const backButtonPressed = ref(false)
-
-    const nextLampiran = () => {
-      step.value = step.value + 1
-    }
-
-    const currentLampiran = () => {
-      step.value
-    }
-
-    const backButton = () => {
-      step.value = step.value - 1
-    }
-
-    // const scrollPosition = () =>{
-    //   scrollInfo.value = 
-    // }
-
-    const hapusLampiran = (index) => {
-      dataLaporan.value.splice(index, 1)
-      // laporan.splice(index, 1)
-      // emit('hapus-lampiran', index)
-      if (step.value !== 1) {
-        step.value = step.value - 1
-        console.log('step.value' + step.value);
-        // console.log(dataLaporan.length);
-      }
-
-      console.log(dataLaporan);
-    }
+    const { state } = ComponentState
+    const {
+      tempLaporan,
+      modelLaporan,
+      laporan,
+      simpanLampiran,
+      hapusLampiran,
+      surat
+    } = DataSurat
 
     return {
-      // onScroll,
-      onUpload,
-      dataLaporan,
-      // scrollInfo,
-      // storageBucketURL,
+      tempLaporan,
       hapusLampiran,
-      nextLampiran,
-      backButtonPressed,
-      backButton,
-      jumlahLampiran,
       laporan,
-      tambahLampiran,
-      step
+      simpanLampiran,
+      state,
+      modelLaporan,
+      surat
 
     }
   }

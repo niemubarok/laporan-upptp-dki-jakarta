@@ -1,7 +1,10 @@
 <template>
   <q-page>
-    <!-- <template-laporan /> -->
-    <tes />
+    <q-card class="q-pa-xs q-ma-md">
+
+      <template-laporan />
+      <!-- <tes /> -->
+    </q-card>
   </q-page>
 </template>
 

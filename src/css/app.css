@@ -1,5 +1,9 @@
 /* app global css */
 body {
-  background-color: #f2f2f2;
+  background-color: lightgray;
+  /* background-image: url("../../public/img/cardbg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-y: bottom; */
   /* color: #240186; */
 }

@@ -1,31 +1,78 @@
 <template>
   <q-img
-    src="../../public/img/treebg.jpg"
+    src="../../public/img/tree.png"
     class="fixed-top"
-    style="opacity:0.5;z-index:-10;height:50vh"
+    style="opacity:1;z-index:-10;height:50vh"
+  ></q-img>
+
+  <q-img
+    src="../../public/img/cardbg.jpg"
+    class="fixed-bottom"
+    style="opacity:0.4;z-index:-10;height:50vh"
   ></q-img>
 
   <!-- v-bind:class="{absolute:miniState }" -->
 
-  <q-layout view="HHh Lpr lFf">
+  <q-layout view="lHh Lpr lFf">
 
     <q-header
-      class="bg-primary glossy"
-      style="opacity:0.9;height:10.3vh"
+      class="bg-primary"
+      style="opacity:0.8;height:10.3vh"
     >
 
-      <add-button />
-
       <q-toolbar>
-
         <q-btn
-          v-if="!$q.screen.lt.md"
           flat
           icon="menu"
           color="warning"
           aria-label="Menu"
-          @click="miniState = !miniState"
+          @click="[state.miniState = !state.miniState, state.leftDrawerOpen = !state.leftDrawerOpen ]"
+          v-if="!$q.screen.lt.md"
         />
+
+        <q-btn
+          flat
+          icon="menu"
+          color="warning"
+          aria-label="Menu"
+          @click="state.leftDrawerOpen = !state.leftDrawerOpen"
+          v-else="!$q.screen.lt.md"
+        />
+
+        <!-- SearchBox -->
+        <!-- <div v-if="this.$route.fullPath == 'surat'"> -->
+
+        <!-- <q-input
+          standout="bg-dark text-primary"
+          label="Search"
+          class="full-width"
+          label-color="yellow"
+          input-class="text-black "
+          input-style="border = 1px solid grey"
+          type="search"
+        >
+          <template v-slot:append>
+            <q-icon
+              v-if="state.text === ''"
+              name="search"
+              color="yellow"
+            />
+            <q-icon
+              v-else
+              name="clear"
+              class="cursor-pointer"
+              @click="state.text = ''"
+            />
+          </template>
+        </q-input> -->
+        <!-- </div> -->
+        <q-page-sticky
+          position="top-left"
+          :offset="[-50, 200]"
+          class="index-top addButton"
+        >
+          <add-button />
+        </q-page-sticky>
 
         <div class="fit row inline wrap justify-end items-start content-start">
           <img
@@ -36,7 +83,7 @@
           <div class="col-* q-mr-sm q-mt-sm">
             <q-toolbar-title class="text-orange-14 text-h4 text-bold">
 
-              <span v-if="!$q.screen.lt.sm"> UPPTP DKI Jakarta</span>
+              <span v-if="!$q.screen.lt.md"> UPPTP DKI Jakarta</span>
               <span v-else="!$q.screen.lt.sm"> UPPTP</span>
 
               <div class="row justify-end q-mb-xs">
@@ -44,7 +91,7 @@
                 <q-badge
                   color="white"
                   outline
-                  v-if="!$q.screen.lt.sm"
+                  v-if="!$q.screen.lt.md"
                 >UNIT PENGELOLA PENGEMBANGAN TANAMAN PERKOTAAN</q-badge>
               </div>
             </q-toolbar-title>
@@ -52,56 +99,81 @@
         </div>
       </q-toolbar>
     </q-header>
-    <!-- Button tambah -->
-
-    <!-- :breakpoint="767" -->
 
     <div
-      style="height:40vh;opacity:0.9;margin-top:10.3vh"
+      style="height:40vh;opacity:0.8;margin-top:10.3vh"
       class="row bg-primary fixed-top"
     >
     </div>
-    <!-- <q-footer class="bg-primary">
-
-    </q-footer> -->
 
     <q-drawer
       show-if-above
-      v-model="leftDrawerOpen"
+      v-model="state.leftDrawerOpen"
       :width="200"
-      :mini="miniState"
-      :mini-width="60"
-      class="bg-primary q-pt-xl"
+      :mini="state.miniState"
+      :mini-width="70"
+      class="q-pt-xl bg-dark z-top"
+      :overlay="$q.screen.lt.md"
     >
       <div
-        v-if="miniState == false"
+        v-if="state.miniState == false"
         class="q-mini-drawer-hide absolute"
-        style="z-index:10;top: 300px; right: -17px"
+        style="z-index:10;bottom: 100px; right: -17px"
       >
         <q-btn
           dense
           unelevated
-          color="warning"
+          round
+          color="primary"
           icon="chevron_left"
-          @click="miniState = true"
+          @click="state.miniState = true"
+          v-if="state.miniState == false"
         />
       </div>
-      <div v-bind:class="{margintop:miniState}">
 
-        <q-list style="margin-top:27px">
+      <div
+        v-if="state.miniState == true"
+        class="q-mini-drawer-hide absolute"
+        style="z-index:10;bottom: 100px; right: 1px"
+      >
+        <q-btn
+          dense
+          unelevated
+          round
+          color="primary"
+          icon="chevron_left"
+          @click="state.miniState = false"
+          v-if="state.miniState == true"
+        />
+      </div>
 
-          <EssentialLink
-            v-for="link in essentialLinks"
-            :key="link.title"
-            v-bind="link"
-            :miniState="miniState"
-          />
-        </q-list>
+      <div
+        class="q-ma-sm"
+        style="border-radius:10px;background-color:rgb(43, 103, 171, 0.3)"
+      >
+        <div :class="{margintop:state.miniState}">
+
+          <q-list style="margin-top:27px">
+
+            <EssentialLink
+              v-for="link in state.essentialLinks"
+              :key="link.title"
+              v-bind="link"
+              :miniState="state.miniState"
+            />
+          </q-list>
+        </div>
       </div>
     </q-drawer>
 
     <q-page-container>
       <router-view />
+
+      <!-- <router-view v-slot="{ Component }">
+        <suspense>
+          <component :is="Component" /> -->
+      <!-- </suspense> -->
+      <!-- </router-view> -->
 
     </q-page-container>
 
@@ -115,52 +187,16 @@ import AddButton from 'src/components/AddButton.vue'
 import ComponentState from '../global/ComponentState'
 // import {ref} from 'vue'
 
-const linksData = [
-  {
-    title: 'Daftar Surat',
-    caption: '',
-    icon: 'list',
-    link: '/surat'
-  },
-  {
-    title: 'Settings',
-    caption: '',
-    icon: 'settings',
-    link: '/setting'
-  }
-
-]
-
-const nextMorphStep = {
-  btn: 'card1',
-  card1: 'btn'
-}
-
 export default {
   name: 'MainLayout',
-  components: { EssentialLink, AddButton },
-  data () {
-    return {
-      leftDrawerOpen: false,
-      essentialLinks: linksData,
-      drawer: false,
-      miniState: false,
-      tambahText: '',
-      text: '',
-      autofocus: false,
-      morphGroupModel: 'btn'
-    }
+  components: {
+    EssentialLink,
+    AddButton
+    // EssentialLink: () => import('components/EssentialLink.vue'),
+    // AddButton: () => import('src/components/AddButton')
   },
-  methods: {
-    nextMorph () {
-      this.morphGroupModel = nextMorphStep[this.morphGroupModel]
-    }
-  },
-
   setup () {
     const { state } = ComponentState
-    console.log(state);
-
     return {
       state
     }
@@ -176,11 +212,11 @@ export default {
 /* opacity: 0.5;
 } */
 
-@media screen and (min-width: 767px) {
+/* @media screen and (min-width: 767px) {
   .q-footer {
     display: none;
   }
-}
+} */
 
 .q-drawer .q-drawer--left .q-drawer--standard {
   border-radius: 0 20px 20px 0;
@@ -191,20 +227,20 @@ export default {
 } */
 
 .q-item.q-item-type.q-router-link--exact-active {
-  background-color: #f5d16c;
-  border-radius: 5px;
-  margin-left: 10px;
-  margin-right: 10px;
+  /* background-color: #f5d16c; */
+  /* border-radius: 5px; */
+  /* margin-left: 10px;
+  margin-right: 10px; */
   /* margin-top: 20px; */
   /* border:1px 0 solid grey; */
   height: 5px;
 }
 
+/* background-color: #fb7715; */
 .q-link.cursor-pointer {
-  background-color: #fb7715;
-  border-radius: 5px;
-  margin-left: 15px;
-  margin-right: 15px;
+  /* border-radius: 5px; */
+  /* margin-left: 15px;
+  margin-right: 15px; */
   margin-top: 5px;
 }
 

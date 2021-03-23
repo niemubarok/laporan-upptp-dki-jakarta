@@ -1,60 +1,45 @@
 <template>
-  <div>
-    <transition
-      appear
-      @before-enter="beforeEnter"
-      @enter="enter"
-    >
+  <q-card class="q-ma-md">
+    <!-- <div class="q-pa-md">
+      <q-file
+        v-model="files"
+        label="Pick files"
+        outlined
+        use-chips
+        multiple
+        style="max-width: 300px"
+      />
+    </div> -->
 
-      <h2>tes</h2>
-
-    </transition>
-
-    <q-input
-      type="date"
-      v-model="date"
-      placeholder="select date"
-    />
-
-    {{state.miniState}}
-
-    <q-btn
-      @click="state.miniState = !state.miniState "
-      label="minState"
-    />
-  </div>
+    <q-btn @click="getFiles"> get file</q-btn>
+  </q-card>
 </template>
 
 <script>
-import gsap from 'gsap'
-import ComponentState from '../global/ComponentState'
-
+import DataSurat from '../global/DataSurat'
+import { onMounted, ref } from 'vue'
+import { db } from '../firebase'
 export default {
+
   setup () {
-    const { state } = ComponentState
-    const date = ''
-    const beforeEnter = (el) => {
-      console.log('initial state');
-      el.style.transform = 'translateY(-60px)'
-      el.style.opacity = 0
+    const { getPathStorageFromUrl } = DataSurat
+    // let fromDB = ref([])
 
+    // const files = ref(null)
+
+    const getFiles = () => {
+
+      const files = getPathStorageFromUrl("https://firebasestorage.googleapis.com/v0/b/laporan-upptp.appspot.com/o/Hasil%2FScreenshot_1.png?alt=media&token=04f74614-7af7-4014-9c0d-fa2288c2ac83")
+
+      console.log(files);
     }
 
-    const enter = (el) => {
-      console.log('enter');
-      gsap.to(el, {
-        duration: 2,
-        y: 0,
-        opacity: 1
-      })
 
-    }
     return {
-      beforeEnter,
-      enter,
-      date,
-      state
-
+      getPathStorageFromUrl,
+      getFiles,
+      // fromDB,
+      // files
     }
   }
 

@@ -1,531 +1,395 @@
 <template>
 
   <q-form
-    @submit="onSubmit"
+    @submit="submitSurat"
     class="q-gutter-sm"
   >
-    <!-- bordered -->
-
     <div style="height:30vh;margin-top:4vh">
-      <!-- class="row bg-primary" -->
-
-      <div
-        style="height:30vh;margin:auto;margin-bottom:-50px;"
-        class="column self-center"
+      <q-card
+        class="bg-grey-4"
+        :class="$q.screen.lt.sm ? 'q-ma-sm':'q-ma-xl'"
       >
-
-        <!-- class="q-ma-md" -->
-
-        <q-card
-          class="bg-grey-4"
-          :class="$q.screen.lt.sm ? 'q-ma-sm':'q-ma-xl'"
-          style="border-radius:20px"
+        <q-stepper
+          v-model="state.step"
+          ref="stepper"
+          color="secondary"
+          animated
+          done-color="green-10"
+          active-color="orange-14"
+          keep-alive
+          :contracted="$q.screen.lt.sm"
+          flat
+          dense
+          bordered
+          class="fullwidth full-height z-top"
+          header-class="bg-secondary text-white"
         >
-          <q-stepper
-            v-model="step"
-            ref="stepper"
-            color="secondary"
-            animated
-            done-color="green-10"
-            active-color="orange-14"
-            keep-alive
-            :contracted="$q.screen.lt.sm"
-            flat
-            dense
-            bordered
+          <!-- style="margin-bottom:-150px" -->
+          <!-- header-class="bg-orange-14" -->
+          <!-- class="absolute-full" -->
+          <!-- active-icon="add" -->
+          <q-step
+            :name="1"
+            title="Detail Surat"
+            icon="assignment"
+            :done="state.step > 1"
           >
-            <!-- header-class="bg-orange-14" -->
-            <!-- class="absolute-full" -->
-            <!-- active-icon="add" -->
-            <q-step
-              :name="1"
-              title="Detail Surat"
-              icon="assignment"
-              :done="step > 1"
+            <!-- caption="Lengkapi detail surat berikut" -->
+
+            <div
+              class="row"
+              style="margin:auto"
             >
-              <!-- caption="Lengkapi detail surat berikut" -->
+              <!-- style="margin-top:-20px;" -->
+              <div
+                style="width:30%"
+                class="q-gutter-sm q-mr-md"
+                :class="$q.screen.lt.sm ? 'full-width':''"
+              >
+
+                <!-- no surat -->
+                <q-input
+                  clearable
+                  standout="bg-blue-10 text-yellow-14"
+                  v-model="surat.noSurat"
+                  label="Nomor Surat"
+                  class="q-mt-sm "
+                  autofocus
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="tag" />
+                  </template>
+                </q-input>
+
+                <!-- tanggal Surat -->
+                <q-input
+                  standout="bg-blue-10 text-yellow-14"
+                  v-model="surat.tglSurat"
+                  :shadow-text="surat.tglSurat == '' ? '< Klik ikon kalender untuk pilih tanggal' : '' "
+                  label-slot
+                  clearable
+                  class="q-mt-sm cursor-pointer"
+                >
+                  <template v-slot:label>
+                    Tanggal Surat / Pemeriksaan Pohon
+                  </template>
+
+                  <template v-slot:prepend>
+                    <q-icon
+                      name="event"
+                      class="cursor-pointer"
+                    >
+                      <q-popup-proxy
+                        ref="qDateProxy"
+                        transition-show="scale"
+                        transition-hide="scale"
+                      >
+                        <q-date
+                          v-model="surat.tglSurat"
+                          :locale="state.localDate"
+                          mask="DD MMMM YYYY"
+                        >
+                          <div class="row items-center justify-end">
+                            <q-btn
+                              v-close-popup
+                              label="Close"
+                              color="primary"
+                              flat
+                            />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
+
+                </q-input>
+
+                <!-- kelurahan -->
+                <q-input
+                  clearable
+                  standout="bg-blue-10 text-yellow-14"
+                  v-model="surat.kelurahan"
+                  label="Kelurahan PMPTSP"
+                  class="q-mt-sm q-ml-sm"
+                  :class="$q.screen.lt.sm ? 'q-mb-sm':''"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="home_work" />
+                  </template>
+                </q-input>
+              </div>
 
               <div
-                class="row"
-                style="margin:auto"
+                style="width:30%"
+                class="q-gutter-sm q-mr-lg"
+                :class="$q.screen.lt.sm ? 'full-width':''"
               >
-                <!-- style="margin-top:-20px;" -->
-                <div
-                  style="width:30%"
-                  class="q-gutter-sm q-mr-md"
-                  :class="$q.screen.lt.sm ? 'full-width':''"
-                >
-
-                  <!-- no surat -->
-                  <q-input
-                    clearable
-                    standout="bg-blue-10 text-yellow-14"
-                    v-model="surat.noSurat"
-                    label="Nomor Surat"
-                    class="q-mt-sm "
-                    autofocus
-                  >
-                    <template v-slot:prepend>
-                      <q-icon name="tag" />
-                    </template>
-                  </q-input>
-
-                  <!-- jumlahLampiran  -->
-                  <!-- <q-input
-              standout="bg-blue-10 text-yellow-14"
-              v-model="surat.jumlahLampiran"
-              label="Jumlah Lampiran"
-              
-              class="q-mt-sm"
-              clearable
-            >
-              <template v-slot:prepend>
-                <q-icon name="attach_file" />
-              </template>
-            </q-input> -->
-
-                  <!-- tanggal Surat -->
-                  <q-input
-                    standout="bg-blue-10 text-yellow-14"
-                    v-model="surat.tglSurat"
-                    :shadow-text="surat.tglSurat == '' ? '< Klik ikon kalender untuk pilih tanggal' : '' "
-                    label-slot
-                    clearable
-                    class="q-mt-sm cursor-pointer"
-                  >
-                    <template v-slot:label>
-                      Tanggal Surat / Pemeriksaan Pohon
-                    </template>
-
-                    <template v-slot:prepend>
-                      <q-icon
-                        name="event"
-                        class="cursor-pointer"
-                      >
-                        <q-popup-proxy
-                          ref="qDateProxy"
-                          transition-show="scale"
-                          transition-hide="scale"
-                        >
-                          <q-date
-                            v-model="surat.tglSurat"
-                            :locale="localDate"
-                            mask="DD MMMM YYYY"
-                          >
-                            <div class="row items-center justify-end">
-                              <q-btn
-                                v-close-popup
-                                label="Close"
-                                color="primary"
-                                flat
-                              />
-                            </div>
-                          </q-date>
-                        </q-popup-proxy>
-                      </q-icon>
-                    </template>
-
-                  </q-input>
-
-                  <!-- kelurahan -->
-                  <q-input
-                    clearable
-                    standout="bg-blue-10 text-yellow-14"
-                    v-model="surat.kelurahan"
-                    label="Kelurahan PMPTSP"
-                    class="q-mt-sm q-ml-sm"
-                    :class="$q.screen.lt.sm ? 'q-mb-sm':''"
-                  >
-                    <template v-slot:prepend>
-                      <q-icon name="home_work" />
-                    </template>
-                  </q-input>
-                </div>
-
-                <div
-                  style="width:30%"
-                  class="q-gutter-sm q-mr-lg"
-                  :class="$q.screen.lt.sm ? 'full-width':''"
-                >
-                  <!-- no spipp -->
-                  <q-input
-                    clearable
-                    standout="
+                <!-- no spipp -->
+                <q-input
+                  clearable
+                  standout="
             bg-blue-10
             text-yellow-14"
-                    v-model="surat.noSPIPP"
-                    label="No. Surat  Permohonan Izin Penebangan Pohon"
-                    class="q-mt-sm"
-                  >
-                    <template v-slot:prepend>
-                      <q-icon name="tag" />
-                    </template>
-                  </q-input>
-
-                  <!-- Tanggal Terima -->
-                  <q-input
-                    standout="bg-blue-10 text-yellow-14"
-                    v-model="surat.tanggalTerimaSurat"
-                    :shadow-text="surat.tanggalTerimaSurat == '' ? '< Klik ikon kalender untuk pilih tanggal' : '' "
-                    label-slot
-                    clearable
-                    class="q-mt-sm"
-                  >
-                    <template v-slot:label>
-                      Tanggal Terima Surat
-                    </template>
-
-                    <template v-slot:prepend>
-                      <q-icon
-                        name="event"
-                        class="cursor-pointer"
-                      >
-                        <q-popup-proxy
-                          ref="qDateProxy"
-                          transition-show="scale"
-                          transition-hide="scale"
-                        >
-                          <q-date
-                            v-model="surat.tanggalTerimaSurat"
-                            :locale="localDate"
-                            mask="DD MMMM YYYY"
-                          >
-                            <div class="row items-center justify-end">
-                              <q-btn
-                                v-close-popup
-                                label="Close"
-                                color="primary"
-                                flat
-                              />
-                            </div>
-                          </q-date>
-                        </q-popup-proxy>
-                      </q-icon>
-                    </template>
-
-                  </q-input>
-
-                  <!-- //nama ka unit -->
-                  <q-input
-                    clearable
-                    standout="bg-blue-10 text-yellow-14"
-                    v-model="surat.namaKaUnit"
-                    label="Nama Ka Unit"
-                    class="q-mt-sm q-mb-md"
-                  >
-                    <template v-slot:prepend>
-                      <q-icon name="account_box" />
-                    </template>
-                  </q-input>
-                </div>
-                <div
-                  style="width:30%"
-                  class="q-gutter-sm"
-                  :class="$q.screen.lt.sm ? 'full-width q-ml-md':''"
+                  v-model="surat.noSPIPP"
+                  label="No. Surat  Permohonan Izin Penebangan Pohon"
+                  class="q-mt-sm"
                 >
+                  <template v-slot:prepend>
+                    <q-icon name="tag" />
+                  </template>
+                </q-input>
 
-                  <!-- lokasiPohon -->
-                  <q-input
-                    clearable
-                    filled
-                    v-model="surat.alamatPohon"
-                    label="Alamat Pemohon / Lokasi Pohon"
-                    class="q-mt-sm"
-                    type="textarea"
-                  >
-                    <template v-slot:prepend>
-                      <q-icon name="place" />
-                    </template>
-                  </q-input>
+                <!-- Tanggal Terima -->
+                <q-input
+                  standout="bg-blue-10 text-yellow-14"
+                  v-model="surat.tanggalTerimaSurat"
+                  :shadow-text="surat.tanggalTerimaSurat == '' ? '< Klik ikon kalender untuk pilih tanggal' : '' "
+                  label-slot
+                  clearable
+                  class="q-mt-sm"
+                >
+                  <template v-slot:label>
+                    Tanggal Terima Surat
+                  </template>
 
-                </div>
-              </div>
-
-            </q-step>
-
-            <q-step
-              :name="2"
-              title="Detail Lampiran"
-              icon="create_new_folder"
-              :done="step > 2"
-            >
-              <!-- caption="Masukan detail laporan" -->
-              <step-2
-                @tambah-lampiran="tambahLampiran"
-                @hapus-lampiran="hapusLampiran"
-              />
-              <!-- :scroll-info="scrollInfo" -->
-
-            </q-step>
-
-            <q-step
-              :name="3"
-              title="Finish"
-              caption="Download Laporan"
-              icon="download"
-            >
-
-              <q-btn @click="submitSurat">
-                submit
-              </q-btn>
-              <!-- <step-3>
-        </step-3> -->
-            </q-step>
-
-            <template v-slot:navigation>
-
-              <div v-for="data in surat.laporan">
-                {{data}}
-              </div>
-              <q-stepper-navigation>
-                <div class="column">
-                  <div class="q-gutter-sm self-end text-secondary">
-                    <!-- @click="next()" -->
-                    <!-- , submitSurat() -->
-                    <q-page-sticky
-                      position="bottom-right"
-                      :offset="[50, 18]"
+                  <template v-slot:prepend>
+                    <q-icon
+                      name="event"
+                      class="cursor-pointer"
                     >
-                      <q-btn
-                        @click="[$refs.stepper.next()
-                 ]"
-                        color="primary"
-                        text-color="secondary"
-                        :label="step === 3 ? 'Selesai' : 'Selanjutnya'"
-                        rounded
+                      <q-popup-proxy
+                        ref="qDateProxy"
+                        transition-show="scale"
+                        transition-hide="scale"
                       >
-                        <!-- icon-right="navigate_next" -->
-                        <q-icon
-                          v-if="step !== 3"
-                          name="navigate_next"
-                        />
-                      </q-btn>
-                    </q-page-sticky>
+                        <q-date
+                          v-model="surat.tanggalTerimaSurat"
+                          :locale="state.localDate"
+                          mask="DD MMMM YYYY"
+                        >
+                          <div class="row items-center justify-end">
+                            <q-btn
+                              v-close-popup
+                              label="Close"
+                              color="primary"
+                              flat
+                            />
+                          </div>
+                        </q-date>
+                      </q-popup-proxy>
+                    </q-icon>
+                  </template>
 
-                    <q-page-sticky
-                      position="bottom-right"
-                      :offset="[200, 18]"
+                </q-input>
+
+                <!-- //nama ka unit -->
+                <q-input
+                  clearable
+                  standout="bg-blue-10 text-yellow-14"
+                  v-model="surat.namaKaUnit"
+                  label="Nama Ka Unit"
+                  class="q-mt-sm q-mb-md"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="account_box" />
+                  </template>
+                </q-input>
+              </div>
+              <div
+                style="width:30%"
+                class="q-gutter-sm"
+                :class="$q.screen.lt.sm ? 'full-width q-ml-md':''"
+              >
+
+                <!-- lokasiPohon -->
+                <q-input
+                  clearable
+                  filled
+                  v-model="surat.alamatPohon"
+                  label="Alamat Pemohon / Lokasi Pohon"
+                  class="q-mt-sm"
+                  type="textarea"
+                >
+                  <template v-slot:prepend>
+                    <q-icon name="place" />
+                  </template>
+                </q-input>
+
+              </div>
+            </div>
+
+          </q-step>
+
+          <q-step
+            :name="2"
+            title="Detail Lampiran"
+            icon="create_new_folder"
+            :done="state.step > 2"
+          >
+            <!-- caption="Masukan detail laporan" -->
+            <div class="z-top">
+
+              <step-2 />
+            </div>
+            <!-- :scroll-info="scrollInfo" -->
+
+          </q-step>
+
+          <q-step
+            :name="3"
+            title="Finish"
+            caption="Download Laporan"
+            icon="download"
+          >
+
+            <q-btn @click="submitSurat">
+              submit
+            </q-btn>
+            <!-- <step-3>
+        </step-3> -->
+          </q-step>
+
+          <template v-slot:navigation>
+            <q-stepper-navigation>
+              <div class="column">
+                <div class="q-gutter-sm self-end text-secondary">
+                  <q-btn
+                    @click="[$refs.stepper.next()
+                 ]"
+                    color="primary"
+                    text-color="secondary"
+                    :label="state.step === 3 ? 'Selesai' : 'Selanjutnya'"
+                    rounded
+                    class=" fixed-bottom-right z-top q-mb-md"
+                    :class="!$q.screen.lt.md ? 'absolute-bottom-right' : '' "
+                    :disable="modelLaporan.namaPohon !== '' && modelLaporan.kesimpulan !== '' &&state.step == 2"
+                  >
+                    <!-- :disable="Object.keys(tempLaporan).length == 0 && state.step == 2" -->
+                    <q-icon
+                      v-if="state.step !== 3"
+                      name="navigate_next"
+                    />
+
+                    <!-- self="top" -->
+                    <q-tooltip
+                      class="bg-red text-center"
+                      anchor="top middle"
+                      self="bottom middle"
+                      :offset="[10, 10]"
+                      v-if="Object.keys(tempLaporan).length == 0 && state.step == 2"
                     >
-                      <!-- flat -->
-                      <q-btn
-                        v-if="step > 1"
-                        color="blue-10"
-                        @click="$refs.stepper.previous()"
-                        icon="navigate_before"
-                        class="q-mr-sm"
-                        size="sm"
-                        rounded
-                      />
-                      <!-- label="Kembali" -->
+                      Silahkan isi minimal 1 lampiran / klik simpan terlebih dahulu
+                    </q-tooltip>
 
-                    </q-page-sticky>
-                  </div>
+                    <q-tooltip
+                      class="bg-red"
+                      anchor="top middle"
+                      self="bottom middle"
+                      :offset="[10, 10]"
+                      v-else-if="modelLaporan.namaPohon !== '' && modelLaporan.kesimpulan !== '' &&state.step == 2"
+                    >
+                      Silahkan save terlebih dahulu laporan yang telah diisi
+                    </q-tooltip>
+                  </q-btn>
 
-                  <!-- v-for="letter in surat"
-              :key="letter" -->
-                  <div>
-                    <!-- <template v-for="report in letter">
-              {{letter}}
-              </template> -->
+                  <!-- <q-btn
+                    v-if="state.step > 1"
+                    @click="[simpanLampiran(), state.seamless = true]"
+                    fab
+                    icon="save"
+                    color="orange-14"
+                    style="right:160px"
+                    class=" fixed-bottom-right z-top q-mb-sm"
+                    :class="!$q.screen.lt.md ? 'absolute-bottom-right' : '' "
+                  >
+                    <q-tooltip
+                      anchor="top middle"
+                      self="bottom middle"
+                      class="bg-indigo"
+                      :offset="[10, 10]"
+                    >
+                      SIMPAN LAMPIRAN
+                    </q-tooltip>
+                  </q-btn> -->
 
-                    <!-- {{surat.laporan}} -->
+                  <q-btn
+                    v-if="state.step > 1"
+                    color="blue-10"
+                    @click="$refs.stepper.previous()"
+                    icon="navigate_before"
+                    size="sm"
+                    rounded
+                    style="right:220px"
+                    class=" fixed-bottom-right z-top q-mb-md"
+                    :class="!$q.screen.lt.md ? 'absolute-bottom-right' : '' "
+                  />
+                  <!-- label="Kembali" -->
 
-                  </div>
-
+                  <!-- </q-page-sticky> -->
                 </div>
-              </q-stepper-navigation>
-            </template>
+                <div>
+                </div>
 
-          </q-stepper>
-        </q-card>
-      </div>
+              </div>
+            </q-stepper-navigation>
+          </template>
+
+        </q-stepper>
+
+        <q-img
+          src="../../public/img/cardbg.jpg"
+          style="width:100%; height:10vh; z-index:1 "
+        >
+        </q-img>
+      </q-card>
     </div>
   </q-form>
 
 </template>
 <script>
 import { useQuasar } from 'quasar'
-import { reactive, ref, onBeforeMount } from 'vue'
+import { ref, onBeforeMount } from 'vue'
 import { createSurat } from 'src/db/surat'
 import { db } from "src/firebase";
 import Step2 from '../components/Step2'
 import Step3 from '../components/Step3'
+import DataSurat from '../global/DataSurat'
+import ComponentState from '../global/ComponentState'
 
 export default {
   components: {
     Step2,
-    Step3
+    Step3,
+    DataSurat
   },
   setup () {
-    const scrollInfo = ref({})
-
+    const { state } = ComponentState
     const $q = useQuasar()
-    // const laporan_id = ''
-
-    // const laporan = reactive({
-    //   namaPohon: '',
-    //   namaLatin: '',
-    //   daun: '',
-    //   batang: '',
-    //   akar: '',
-    //   kecepatanAngin: '',
-    //   lokasi: '',
-    //   zona: '',
-    //   segmen: '',
-    //   layer1: {
-    //     image: ref(null),
-    //     diameter: null,
-    //     tinggi_batang: null,
-    //     lingkaran_batang: null
-    //   },
-    //   layer2: {
-    //     image: ref(null),
-    //     diameter: null,
-    //     tinggi_batang: null,
-    //     lingkaran_batang: null
-    //   }
-    // })
-
-    const surat = reactive({
-      surat_id: null,
-      noSurat: '',
-      tglSurat: '',
-      kelurahan: '',
-      noSPIPP: '',
-      namaKaUnit: '',
-      alamatPohon: '',
-      tanggalTerimaSurat: '',
-      jumlahLampiran: '',
-      laporan: [],
-    })
-
-    const lampiran = ref([])
-
-    // menambahkan lampiran ke dalam array untuk nanti dipush ke firebase
-    const tambahLampiran = async (event) => {
-      // lampiran.value.push({ ...laporan })
-      surat.laporan.push({ ...event })
-
-      event.splice(event.length - 1, 1)
-      console.log(event);
-      console.log(surat.laporan);
-    }
-
-    const hapusLampiran = async (event) => {
-      surat.laporan.splice(event, 1)
-      console.log(event);
-    }
-
-
-    // ambil id terakhir
-    const currentId = () => {
-      const id = db.collection('surat').doc('count')
-        .onSnapshot((querySnapshot => {
-
-          const data = {
-
-            surat_id: querySnapshot.data().surat_id + 1,
-            laporan_id: querySnapshot.data().laporan_id + 1,
-          }
-          surat.surat_id = data.surat_id
-          // laporan_id = data.laporan_id
-          // console.log(surat.laporan);
-        }))
-      // return id
-    }
-
-    // setTimeout(() => {
-    // console.log(surat.surat_id);
-
-    // }, 3000
-
-
-    // )
-
-
-    // console.log(laporan_id);
-
-    const submitSurat = async () => {
-      try {
-        await createSurat({ ...surat })
-        db.collection('surat').doc('count').update({
-          surat_id: surat.surat_id,
-          // laporan_id: laporan_id.value
-
-
-        }).then(() => {
-          console.log('sukses');
-        }).catch((e) => {
-          console.log(e);
-        })
-
-        $q.notify('berhasil disimpan')
-
-        // surat.surat_id = ''
-        // surat.noSurat = ''
-        // surat.tglSurat = ''
-        // surat.kelurahan = ''
-        // surat.noSPIPP = ''
-        // surat.namaKaUnit = ''
-        // surat.alamatPohon = ''
-        // surat.tanggalTerimaSurat = ''
-        // surat.jumlahLampiran = ''
-      } catch (error) {
-        console.log(error);
-      }
-    }
-
-    const onSubmit = async () => {
-      try {
-        await createSurat({ ...surat })
-        surat.id = ''
-        surat.surat_id = ''
-        surat.noSurat = ''
-        surat.tglSurat = ''
-        surat.kelurahan = ''
-        surat.noSPIPP = ''
-        surat.namaKaUnit = ''
-        surat.alamatPohon = ''
-        surat.tanggalTerimaSurat = ''
-        surat.jumlahLampiran = ''
-      } catch (error) {
-        console.log(error);
-      }
-
-
-    }
+    const {
+      modelLaporan,
+      surat,
+      tempLaporan,
+      tempImageURL,
+      // simpanLampiran,
+      submitSurat,
+      currentId, } = DataSurat
 
     onBeforeMount(() => {
       currentId()
     })
 
-    const onScroll = (info) => {
-      scrollInfo.value = info
-    }
-    // console.log(scrollInfo.value);
-
     return {
-      onScroll,
-      scrollInfo,
-
-      lampiran,
-      // laporan,
-      hapusLampiran,
-      tambahLampiran,
+      modelLaporan,
       surat,
-      onSubmit,
-      step: ref(1),
+      tempLaporan,
+      tempImageURL,
+      // simpanLampiran,
+      // onSubmit,
       submitSurat,
-      currentId,
+      // currentId,
+      state,
 
-      localDate: {
-        /* starting with Sunday */
-        days: 'Minggu_Senin_Selasa_Rabu_Kamis_Jum\'at_Sabtu'.split('_'),
-        daysShort: 'Minggu_Senin_Selasa_Rabu_Kamis_Jum\'at_Sabtu'.split('_'),
-        months: 'Januari_Februari_Maret_April_Mei_Juni_Juli_Agustus_September_Oktober_November_Desember'.split('_'),
-        monthsShort: 'Januari_Februari_Maret_April_Mei_Juni_Juli_Agustus_September_Oktober_November_Desember'.split('_'),
-        firstDayOfWeek: 1
-      },
+
     }
   }
 }
