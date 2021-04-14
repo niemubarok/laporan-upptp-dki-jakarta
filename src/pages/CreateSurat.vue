@@ -4,9 +4,10 @@
     @submit="submitSurat"
     class="q-gutter-sm"
   >
-    <div style="height:30vh;margin-top:4vh">
+    <div style="height:30vh;margin-top:4vh;">
       <q-card
         class="bg-grey-4"
+        style="border-radius:20px;"
         :class="$q.screen.lt.sm ? 'q-ma-sm':'q-ma-xl'"
       >
         <q-stepper

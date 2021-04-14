@@ -20,10 +20,25 @@ const routes = [
       },
       {
         path: "/surat/edit/:id",
+        props: true,
         component: () => import("pages/EditSurat.vue"),
       },
+      {
+        path: "/surat/:id",
+        name: "detailSurat",
+        component: () => import("pages/DetailSurat.vue"),
+      },
+      // {
+      //   path: "/surat/detail/",
+      //   component: () => import("pages/DetailSurat.vue"),
+      // },
     ],
   },
+  // {
+  //   path: "/surat/detail/:id",
+  //   name: "detailSurat",
+  //   component: () => import("pages/DetailSurat.vue"),
+  // },
   // Always leave this as last one,
   // but you can also remove it
   {

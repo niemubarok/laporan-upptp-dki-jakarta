@@ -35,5 +35,10 @@ export default route(function (/* { store, ssrContext } */) {
     ),
   });
 
+  Router.beforeEach(async (to, from, next) => {
+    // to;
+    next();
+  });
+
   return Router;
 });

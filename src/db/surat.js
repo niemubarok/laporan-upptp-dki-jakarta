@@ -2,8 +2,9 @@ import { suratCollection } from "src/firebase";
 import { ref, onUnmounted } from "vue";
 
 export const getSurat = async (id) => {
-  const surat = await suratCollection.doc(id).get();
-  return surat.exists ? surat.data() : null;
+  await suratCollection.doc(id).get();
+  // console.log(surat.data());
+  // return surat.exists ? surat.data() : null;
 };
 
 // export const getCurrentId = async () => {
@@ -29,15 +30,29 @@ export const deleteSurat = async (id) => {
   return suratCollection.doc(id).delete();
 };
 
-export const useLoadSurat = () => {
+export const useLoadSurat = (id) => {
+  console.log(id);
+  // const surat = ref([]);
+  // const close = suratCollection.doc(id).onSnapshot((snapshot) => {
+  //   surat.value = snapshot.docs.map((doc) => ({
+  //     id: doc.id,
+  //     ...doc.data(),
+  //   }));
+  // });
+  // console.log(surat);
+  // onUnmounted(close);
+  // return surat;
+};
+
+export const detailSurat = (id) => {
   const surat = ref([]);
-  const close = suratCollection.onSnapshot((snapshot) => {
-    surat.value = snapshot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-  });
-  // console.log(doc);
-  onUnmounted(close);
-  return surat;
+  const getSurat = suratCollection
+    .doc(id)
+    .get()
+    .then((querySnapshot) => {
+      querySnapshot.forEach((doc) => {
+        console.log(doc);
+      });
+    });
+  onUnmounted(getSurat);
 };

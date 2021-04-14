@@ -11,7 +11,7 @@
     <!-- <template v-for="modelLaporan in modelLaporan"> -->
     <q-card
       flat
-      class="q-pa-sm  bg-grey-1"
+      class="q-pa-sm"
       :class="$q.screen.lt.sm ? 'full-width q-mt-sm':''"
       style="width:50%"
     >
@@ -78,7 +78,7 @@
 
     <q-card
       flat
-      class="q-pa-sm  bg-grey-1"
+      class="q-pa-sm"
       style="width:50%"
       :class="$q.screen.lt.sm ? 'full-width q-mt-sm':''"
     >
@@ -160,7 +160,7 @@
     <!-- layer1 -->
     <q-card
       flat
-      class="q-pa-sm  q-mt-xs q-ml-xs bg-grey-1"
+      class="q-pa-sm  q-mt-xs q-ml-x"
       :class="$q.screen.lt.sm ? 'full-width q-mt-sm':''"
       style="width:30%;"
     >
@@ -229,7 +229,7 @@
 
     <!-- layer2 -->
     <q-card
-      class="q-pa-sm  q-ml-xs q-mt-xs bg-grey-1"
+      class="q-pa-sm  q-ml-xs q-mt-x"
       flat
       :class="$q.screen.lt.sm ? 'full-width' : ''"
       style="width:30%;"
@@ -312,7 +312,7 @@
 
     <q-card
       flat
-      class="q-pa-sm  q-ma-xs bg-grey-1"
+      class="q-pa-sm  q-ma-x"
       :style="$q.screen.lt.sm ? 'width:100%':'width:30%'"
     >
 
@@ -371,6 +371,11 @@
       >
       </q-page-sticky> -->
 
+      {{tempLaporan}}
+      <hr>
+      {{modelLaporan.imageLayer2}}
+      <hr>
+      {{modelLaporan.hasil}}
       <!-- tombol tambah lampiran -->
     </q-card>
     <!-- </template> -->

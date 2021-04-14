@@ -66,13 +66,13 @@
           </template>
         </q-input> -->
         <!-- </div> -->
-        <q-page-sticky
+        <!-- <q-page-sticky
           position="top-left"
           :offset="[-50, 200]"
           class="index-top addButton"
-        >
-          <add-button />
-        </q-page-sticky>
+        > -->
+        <add-button />
+        <!-- </q-page-sticky> -->
 
         <div class="fit row inline wrap justify-end items-start content-start">
           <img
@@ -167,13 +167,14 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
-
-      <!-- <router-view v-slot="{ Component }">
-        <suspense>
-          <component :is="Component" /> -->
-      <!-- </suspense> -->
-      <!-- </router-view> -->
+      <!-- <router-view /> -->
+      <!-- <keep-alive> -->
+      <router-view v-slot="{ Component }">
+        <!-- <suspense> -->
+        <component :is="Component" />
+        <!-- </suspense> -->
+      </router-view>
+      <!-- </keep-alive> -->
 
     </q-page-container>
 

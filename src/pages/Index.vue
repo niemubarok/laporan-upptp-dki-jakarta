@@ -2,7 +2,7 @@
   <q-page>
     <q-card class="q-pa-xs q-ma-md">
 
-      <template-laporan />
+      <!-- <template-laporan /> -->
       <!-- <tes /> -->
     </q-card>
   </q-page>

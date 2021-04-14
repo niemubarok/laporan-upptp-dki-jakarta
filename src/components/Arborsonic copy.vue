@@ -1,11 +1,10 @@
 <template>
-  <!-- <q-card class="q-ma-md q-pa-md no-shadow"> -->
+  <!-- <q-card class="q-ma-md q-pa-md"> -->
 
   <div
     id="arborsonic"
     class="items-center"
   >
-    <!-- v-for="data in data.laporan" -->
     <!-- style="margin-left:50px;" -->
     <!-- style="margin-top:900px" -->
     <h6
@@ -21,7 +20,7 @@
       <div class="col">
         <table
           border="1px"
-          style="width:250px"
+          style="width:250px;white-space:nowrap"
         >
           <!-- style="margin-left:100px;" -->
           <tr class="text-center q-pa-md">
@@ -44,15 +43,15 @@
               <div style="height:15px;">Tanggal</div>
             </td>
             <td>
-              <div style="height:15px;">: {{surat.tglSurat}}</div>
+              <div style="height:15px;">:</div>
             </td>
           </tr>
           <tr>
             <td>
-              <div style="height:15px;width:90px;">Nama Pohon</div>
+              <div style="height:15px;">Nama Pohon</div>
             </td>
             <td>
-              <div style="height:20px;">: {{data.namaPohon}}</div>
+              <div style="height:15px;">:</div>
             </td>
           </tr>
           <tr>
@@ -60,7 +59,7 @@
               <div style="height:15px;">Nama Latin</div>
             </td>
             <td>
-              <div style="height:15px;">: {{data.namaLatin}}</div>
+              <div style="height:15px;">:</div>
             </td>
           </tr>
           <tr>
@@ -76,15 +75,7 @@
               <div style="height:15px;"> Daun</div>
             </td>
             <td>
-              <div style="height:15px;">: {{data.daun}}</div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div style="height:15px;"> Batang</div>
-            </td>
-            <td>
-              <div style="height:15px;">: {{data.batang}}</div>
+              <div style="height:15px;">:</div>
             </td>
           </tr>
           <tr>
@@ -92,7 +83,7 @@
               <div style="height:15px;">Akar</div>
             </td>
             <td>
-              <div style="height:15px;">: {{data.batang}}</div>
+              <div style="height:15px;">:</div>
             </td>
           </tr>
           <tr>
@@ -100,7 +91,7 @@
               <div style="height:15px;">Kec.Angin</div>
             </td>
             <td>
-              <div style="height:15px;">: {{data.kecepatanAngin}}</div>
+              <div style="height:15px;">:</div>
             </td>
           </tr>
           <tr>
@@ -108,7 +99,7 @@
               <div style="height:15px;">Lokasi</div>
             </td>
             <td>
-              <div style="height:15px;text-overflow:ellipsis; overflow: hidden;">: {{surat.alamatPohon}}</div>
+              <div style="height:15px;">:</div>
             </td>
           </tr>
           <tr>
@@ -116,15 +107,15 @@
               <div style="height:15px;">Zona</div>
             </td>
             <td>
-              <div style="height:15px;">:{{data.zona}}</div>
+              <div style="height:15px;">:</div>
             </td>
           </tr>
           <tr>
             <td>
-              <div style="height:15px;">Segmen</div>
+              <div style="height:15px;">BatSegmenang</div>
             </td>
             <td>
-              <div style="height:15px;">:{{data.segmen}}</div>
+              <div style="height:15px;">:</div>
             </td>
           </tr>
         </table>
@@ -160,37 +151,23 @@
           <th colspan="3">
             <div style="height:20px"> LAYER 2</div>
           </th>
-          <th style="width:250px;">
+          <th colspan="2">
             <div style="height:20px"> LAYER 3</div>
           </th>
         </tr>
-        <tr style="height:100px;text-align:center">
+        <tr style="width:100%;height:100px;text-align:center">
           <!-- class="items-center" -->
-          <!-- id="image" -->
-          <td
-            colspan="3"
-            id="image"
-          >
-            <!-- style="max-height:120px; width:50%;" -->
-            <!-- {{image(data.imageLayer1[0])}} -->
-            <!-- <img
-              :src="image(data.imageLayer1)"
-            /> -->
-            <!-- v-if="data.imageLayer1" -->
-            <!-- <div
-              style="max-height:120px; width:50%;"
-            >
-
-            </div> -->
-            {{image(data.imageLayer1[0])}}
-          </td>
+          <td colspan="3"> <img
+              :src="data.imageLayer1"
+              style="height:80%; width:80%;"
+            /></td>
           <td colspan="3"><img
               :src="data.imageLayer2"
-              style="max-height:120px; width:50%;"
+              style="height:80%; width:80%;"
             /></td>
-          <td><img
+          <td colspan="2"><img
               :src="data.hasil"
-              style="max-height:120px; width:50%;"
+              style="height:80%; width:80%;"
             /></td>
         </tr>
         <tr
@@ -208,9 +185,12 @@
             colspan="3"
             class="text-center"
           > Literatur Pemeriksaan</td>
-          <td class="text-center"> <span
+          <td
+            class="text-center"
+            colspan="3"
+          > <span
               class="text-bold"
-              style="text-decoration:underline;width:250px"
+              style="text-decoration:underline;"
             >
               Kesimpulan</span><br>
           </td>
@@ -220,39 +200,38 @@
             Diameter
           </td>
           <td style="width:10px;">:</td>
-          <td style="width:100px;">{{data.diameterLayer1}}</td>
+          <td style="width:100px;">&emsp;</td>
           <td style="width:100px;">
             Diameter
           </td>
           <td style="width:10px;">:</td>
-          <td style="width:100px;">{{data.diameterLayer2}}</td>
-          <td rowspan="3">
-            {{data.kesimpulan}}
+          <td style="width:100px;">&emsp;</td>
+          <td>
+            Pohon tidak dapat diperiksa karena sudah ditebang
           </td>
-        </tr>
         <tr>
           <td>
             Tinggi Batang
           </td>
           <td>:</td>
-          <td>{{data.tinggiBatangLayer1}}</td>
+          <td>&emsp;</td>
           <td>
             Tinggi Batang
           </td>
           <td>:</td>
-          <td>{{data.tinggiBatangLayer2}}</td>
+          <td>&emsp;</td>
         </tr>
         <tr>
           <td>
             Lingkaran Batang
           </td>
           <td>:</td>
-          <td>{{data.lingkaranBatangLayer1}}</td>
+          <td>&emsp;</td>
           <td>
             Lingkaran Batang
           </td>
           <td>:</td>
-          <td>{{data.lingkaranBatangLayer2}}</td>
+          <td>&emsp;</td>
 
         </tr>
         <tr class="bg-grey-3 text-bold">
@@ -260,6 +239,7 @@
             colspan="7"
             style="text-align:center"
           >KETERANGAN WARNA</td>
+        </tr>
         </tr>
         <tr>
           <!-- <div style="height:11px;"></div> -->
@@ -284,11 +264,11 @@
         </tr>
         <tr>
           <td
-            colspan="7"
+            colspan="8"
             class="text-bold bg-grey-3 text-center"
           >INSTRUKSI/ARAHAN</td>
         </tr>
-        <tr style="height:80px"> {{data.arahan}}</tr>
+        <tr style="height:80px"></tr>
 
       </table>
     </div>
@@ -297,7 +277,6 @@
       class="row"
       style="margin-left:50px;"
     >
-      <!-- {{image(data.imageLayer1[0])}} -->
       <div class="col"> Tim Pemeriksa <br>
         1. Heru Mahendra, S.P <br>
         2. Murtanih <br>
@@ -319,53 +298,11 @@
     </div>
 
   </div>
-  <!-- </q-card> -->
 </template>
 
 <script>
-import { ref } from 'vue'
 export default {
-
-  props: ['data', 'surat'],
-  setup (props) {
-
-    const image = (url) => {
-      let imageId = document.getElementById("image")
-      if (imageId) {
-        // let ctx = imageId[0].getContext("2d")
-        let img = document.createElement('img')
-        img.src = url
-        // let getImg = document.get
-        imageId.drawImage(img, 10, 10)
-      }
-      // img.download = "public/img/image.png"
-      // let canvas = document.cre
-      // console.log(img);
-      // console.log(document.getElementById("image"));
-      // if (imageId) {
-      //   let blob = new Blob([img])
-      //   console.log(blob);
-      //   // imageId.appendChild(blob).style.width = '100px'
-      //   // imageId.style.width = '100px'
-
-      // }
-
-    }
-
-
-
-
-    const base64Encode = (url) => {
-      const encodedurl = window.btoa(url)
-      return encodedurl
-    }
-
-
-    return {
-      image,
-      base64Encode
-    }
-  }
+  props: ['data']
 
 }
 </script>
