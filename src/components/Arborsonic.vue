@@ -1,13 +1,5 @@
 <template>
-  <!-- <q-card class="q-ma-md q-pa-md no-shadow"> -->
-
-  <div
-    id="arborsonic"
-    class="items-center"
-  >
-    <!-- v-for="data in data.laporan" -->
-    <!-- style="margin-left:50px;" -->
-    <!-- style="margin-top:900px" -->
+  <q-card class="q-ma-md q-pa-md no-shadow">
     <h6
       class="text-center"
       style="text-decoration:underline;"
@@ -19,10 +11,8 @@
       style="margin-left:50px;margin-top:-30px;"
     >
       <div class="col">
-        <table
-          border="1px"
-          style="width:250px"
-        >
+        <table border="1px">
+          <!-- style="width:250px" -->
           <!-- style="margin-left:100px;" -->
           <tr class="text-center q-pa-md">
             <th style="width:130px;">Keseluruhan Pohon</th>
@@ -41,15 +31,15 @@
         <table style="margin-left:20px">
           <tr>
             <td>
-              <div style="height:15px;">Tanggal</div>
+              <div style="">Tanggal</div>
             </td>
             <td>
-              <div style="height:15px;">: {{surat.tglSurat}}</div>
+              <div style="">: {{surat.tglSurat}}</div>
             </td>
           </tr>
           <tr>
             <td>
-              <div style="height:15px;width:90px;">Nama Pohon</div>
+              <div style="width:90px;">Nama Pohon</div>
             </td>
             <td>
               <div style="height:20px;">: {{data.namaPohon}}</div>
@@ -57,74 +47,74 @@
           </tr>
           <tr>
             <td>
-              <div style="height:15px;">Nama Latin</div>
+              <div style="">Nama Latin</div>
             </td>
             <td>
-              <div style="height:15px;">: {{data.namaLatin}}</div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div style="height:15px;">Kondisi Pohon</div>
-            </td>
-            <td>
-              <div style="height:15px;">:</div>
+              <div style="">: {{data.namaLatin}}</div>
             </td>
           </tr>
           <tr>
             <td>
-              <div style="height:15px;"> Daun</div>
+              <div style="">Kondisi Pohon</div>
             </td>
             <td>
-              <div style="height:15px;">: {{data.daun}}</div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div style="height:15px;"> Batang</div>
-            </td>
-            <td>
-              <div style="height:15px;">: {{data.batang}}</div>
+              <div style="">:</div>
             </td>
           </tr>
           <tr>
             <td>
-              <div style="height:15px;">Akar</div>
+              <div style=""> Daun</div>
             </td>
             <td>
-              <div style="height:15px;">: {{data.batang}}</div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div style="height:15px;">Kec.Angin</div>
-            </td>
-            <td>
-              <div style="height:15px;">: {{data.kecepatanAngin}}</div>
+              <div style="">: {{data.daun}}</div>
             </td>
           </tr>
           <tr>
             <td>
-              <div style="height:15px;">Lokasi</div>
+              <div style=""> Batang</div>
             </td>
             <td>
-              <div style="height:15px;text-overflow:ellipsis; overflow: hidden;">: {{surat.alamatPohon}}</div>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <div style="height:15px;">Zona</div>
-            </td>
-            <td>
-              <div style="height:15px;">:{{data.zona}}</div>
+              <div style="">: {{data.batang}}</div>
             </td>
           </tr>
           <tr>
             <td>
-              <div style="height:15px;">Segmen</div>
+              <div style="">Akar</div>
             </td>
             <td>
-              <div style="height:15px;">:{{data.segmen}}</div>
+              <div style="">: {{data.batang}}</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div style="">Kec.Angin</div>
+            </td>
+            <td>
+              <div style="">: {{data.kecepatanAngin}}</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div style="">Lokasi</div>
+            </td>
+            <td>
+              <div style="text-overflow:ellipsis; overflow: hidden;">: {{surat.alamatPohon}}</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div style="">Zona</div>
+            </td>
+            <td>
+              <div style="">:{{data.zona}}</div>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <div style="">Segmen</div>
+            </td>
+            <td>
+              <div style="">:{{data.segmen}}</div>
             </td>
           </tr>
         </table>
@@ -148,7 +138,7 @@
       style="margin-left:50px;"
       class="row q-ma-md"
     >
-      <p class="text-subtitle1">Gambar Horizontal dan Vertikal bagian dalam pohon</p>
+      <p class="text-subtitle1">Gambar Horizontal dan Vertikal bagian dalam pohon </p>
       <table
         border="1px"
         style="width:95%;margin-top:-20px;"
@@ -171,18 +161,18 @@
             colspan="3"
             id="image"
           >
-            <!-- style="max-height:120px; width:50%;" -->
             <!-- {{image(data.imageLayer1[0])}} -->
-            <!-- <img
-              :src="image(data.imageLayer1)"
-            /> -->
+            <img
+              style="max-height:120px; width:50%;"
+              :src="data.imageLayer1"
+            />
             <!-- v-if="data.imageLayer1" -->
             <!-- <div
               style="max-height:120px; width:50%;"
             >
 
             </div> -->
-            {{image(data.imageLayer1[0])}}
+            <!-- {{image(data.imageLayer1[0])}} -->
           </td>
           <td colspan="3"><img
               :src="data.imageLayer2"
@@ -318,8 +308,9 @@
       </div>
     </div>
 
-  </div>
-  <!-- </q-card> -->
+  </q-card>
+
+  <div style="page-break-after:always"></div>
 </template>
 
 <script>
@@ -336,7 +327,7 @@ export default {
         let img = document.createElement('img')
         img.src = url
         // let getImg = document.get
-        imageId.drawImage(img, 10, 10)
+        // imageId.drawImage(img, 10, 10)
       }
       // img.download = "public/img/image.png"
       // let canvas = document.cre
@@ -370,7 +361,28 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+@media print {
+  body {
+    transform: scale(0.7);
+  }
+  table {
+    page-break-inside: avoid;
+  }
+  th,
+  td {
+    width: 10%;
+    padding: 0 1mm 0 1mm;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /* border: 1px solid black; */
+  }
+  th:first-child {
+    width: 10%;
+  }
+}
+
 table {
   /* width: 85%; */
   /* border: 1px solid black; */

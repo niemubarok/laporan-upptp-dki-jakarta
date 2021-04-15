@@ -13,12 +13,12 @@ const linksData = [
     icon: "list",
     link: "/surat",
   },
-  {
-    title: "Daftar Pohon",
-    caption: "",
-    icon: "nature",
-    link: "/surat",
-  },
+  // {
+  //   title: "Daftar Pohon",
+  //   caption: "",
+  //   icon: "nature",
+  //   link: "/surat",
+  // },
 ];
 
 const state = reactive({
@@ -32,6 +32,7 @@ const state = reactive({
   tambahText: "",
   text: "",
   autofocus: false,
+  loaded: false,
 
   localDate: {
     /* starting with Sunday */
