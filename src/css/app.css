@@ -7,3 +7,9 @@ body {
   background-position-y: bottom; */
   /* color: #240186; */
 }
+
+@media print {
+  .noprint {
+    display: none;
+  }
+}

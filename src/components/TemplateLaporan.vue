@@ -1,10 +1,4 @@
 <template>
-
-  <!-- <q-card
-  > -->
-  <!-- tag="div" -->
-  <!-- v-if="detail[0]" -->
-  <!-- style="width:90%;margin:auto;" -->
   <q-card
     id="content"
     v-if="detail[0]"
@@ -139,19 +133,15 @@
       </div>
     </div>
   </q-card>
-  <!-- </q-card> -->
   <div class="pagebreak"></div>
   <template
     v-if="detail[0]"
     v-for="laporan in detail[0].laporan "
   >
-
-    <!-- <q-card class="q-ma-md q-pa-md no-shadow"> -->
     <arborsonic
       :data="laporan"
       :surat='detail[0]'
     />
-    <!-- </q-card> -->
 
   </template>
 

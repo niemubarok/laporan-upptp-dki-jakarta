@@ -1,14 +1,20 @@
 <template>
 
   <div>
+
     <q-file
-      standout="bg-primary text-white"
+      :standout="modelLaporan.imageLayer1 ? 'bg-green-9 text-white': 'bg-primary text-white' "
       v-model="tempImageLayer1"
       :label="'Gambar ' +layer"
       max-files="1"
       v-if="layer == 'Layer 1'"
-      use-chips
+      @change="uploadImageNgetUrl"
+      clearable
+      @clear="deleteImageFromFirebase('layer 1', modelLaporan.imageLayer1)"
+      loading="true"
+      :bg-color="modelLaporan.imageLayer1 ? 'green-9 text-white': ''"
     >
+      <!-- use-chips -->
       <template v-slot:prepend>
         <q-icon name="folder_open" />
       </template>
@@ -48,6 +54,7 @@
 
 <script>
 import DataSurat from '../global/DataSurat'
+import { ref } from 'vue'
 
 export default {
   props: [
@@ -56,14 +63,33 @@ export default {
   ],
   setup () {
 
+    const isUploaded = ref(false)
+
     const { tempImageLayer1,
       tempImageLayer2,
-      tempImageHasil, } = DataSurat
+      tempImageHasil,
+      modelLaporan,
+      tempLaporan,
+      isImageLayer1Uploaded,
+      isImageLayer2Uploaded,
+      isImageHasilUploaded,
+      deleteImageFromFirebase,
+      uploadImageNgetUrl } = DataSurat
+
+    console.log(isImageLayer1Uploaded.value);
+    console.log(modelLaporan.imageLayer1);
 
     return {
+      modelLaporan,
+      tempLaporan,
+      isImageLayer1Uploaded,
+      isImageLayer2Uploaded,
+      isImageHasilUploaded,
+      deleteImageFromFirebase,
       tempImageLayer1,
       tempImageLayer2,
       tempImageHasil,
+      uploadImageNgetUrl
     }
   }
 }

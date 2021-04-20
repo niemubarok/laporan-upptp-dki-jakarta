@@ -371,11 +371,13 @@
       >
       </q-page-sticky> -->
 
-      {{tempLaporan}}
+      laporan1 {{tempLaporan[0]}}
       <hr>
-      {{modelLaporan.imageLayer2}}
+      laporan2 {{tempLaporan[1]}}
       <hr>
-      {{modelLaporan.hasil}}
+      <!-- {{modelLaporan.imageLayer2}}
+      <hr>
+      {{modelLaporan.hasil}} -->
       <!-- tombol tambah lampiran -->
     </q-card>
     <!-- </template> -->
@@ -388,9 +390,9 @@
     fab
     icon="save"
     color="orange-14"
-    style="right:160px;"
-    class=" absolute-bottom-right z-top q-mb-sm"
-    :class="!$q.screen.lt.md ? 'absolute-bottom-right' : '' "
+    style="right:206px;bottom:50px;"
+    class=" fixed-bottom-right z-top q-mb-sm"
+    :class="!$q.screen.lt.md ? 'fixed-bottom-right' : '' "
   >
     <q-tooltip
       anchor="top middle"

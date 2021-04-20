@@ -14,15 +14,15 @@ const modelLaporan = reactive({
   lokasi: "",
   zona: "",
   segmen: "",
-  imageLayer1: [],
+  imageLayer1: null,
   diameterLayer1: "",
   tinggiBatangLayer1: "",
   lingkaranBatangLayer1: "",
-  imageLayer2: [],
+  imageLayer2: null,
   diameterLayer2: "",
   tinggiBatangLayer2: "",
   lingkaranBatangLayer2: "",
-  hasil: [],
+  hasil: null,
   kesimpulan: "",
   arahan: "",
 });
@@ -41,6 +41,13 @@ const surat = reactive({
 });
 
 let tempLaporan = ref([]);
+
+const tempImageLayer1 = ref(null);
+const tempImageLayer2 = ref(null);
+const tempImageHasil = ref(null);
+const isImageLayer1Uploaded = ref(false);
+const isImageLayer2Uploaded = ref(false);
+const isImageHasilUploaded = ref(false);
 
 // const tempLaporan = [
 //   {
@@ -127,12 +134,7 @@ const getImagerURL = async (layer, tempImage) => {
   return storage.ref(file).getDownloadURL();
 };
 
-const tempImageLayer1 = ref(null);
-const tempImageLayer2 = ref(null);
-const tempImageHasil = ref(null);
-
-// menambahkan lampiran ke dalam array untuk nanti dipush ke firebase
-const simpanLampiran = async () => {
+const uploadImageNgetUrl = async () => {
   //upload image ke firebase kemudian ambil urlnya
   if (tempImageLayer1.value !== null) {
     await uploadImage("Layer 1", tempImageLayer1).then((snapshot) => {
@@ -141,14 +143,16 @@ const simpanLampiran = async () => {
           url
         ) {
           if (url) {
-            // modelLaporan.imageLayer1.splice(0, 1, url);
-            modelLaporan.imageLayer1.unshift(url);
+            modelLaporan.imageLayer1 = url;
+            isImageLayer1Uploaded.value = true;
           }
         });
-        tempImageLayer1.value = null;
+        // tempImageLayer1.value = null;
       }
     });
   }
+
+  //image Layer 2
   if (tempImageLayer2.value !== null) {
     await uploadImage("Layer 2", tempImageLayer2).then((snapshot) => {
       if (snapshot.state == "success") {
@@ -156,43 +160,30 @@ const simpanLampiran = async () => {
           url
         ) {
           if (url) {
-            modelLaporan.imageLayer2.splice(0, 1, url);
+            modelLaporan.imageLayer2 = url;
           }
         });
-        tempImageLayer2.value = null;
+        // tempImageLayer1.value = null;
       }
     });
   }
+  //image Hasil
 
   if (tempImageHasil.value !== null) {
     await uploadImage("Hasil", tempImageHasil).then((snapshot) => {
       if (snapshot.state == "success") {
         getImagerURL("Hasil", tempImageHasil.value.name).then(function (url) {
           if (url) {
-            modelLaporan.hasil.splice(0, 1, url);
+            modelLaporan.hasil = url;
           }
         });
-        tempImageHasil.value = null;
+        // tempImageLayer1.value = null;
       }
     });
   }
+};
 
-  //--------- end upload image ----------------//
-
-  //get surat id terakhir dari firebase
-  currentId();
-
-  // push modelLaporan / data yang diinput diform ke temporary loporan
-  tempLaporan.value.push({ ...modelLaporan });
-
-  //setelah tempLaporan terisi oleh modelLaporan
-  //templaporan dimasukan ke surat.laporan
-  surat.laporan = tempLaporan.value;
-  Notify.create({
-    message: "Lampiran Berhasil disimpan",
-    color: "green-8",
-  });
-
+const resetForm = () => {
   //reset form
   modelLaporan.namaPohon = "";
   modelLaporan.namaLatin = "";
@@ -211,6 +202,38 @@ const simpanLampiran = async () => {
   modelLaporan.lingkaranBatangLayer2 = "";
   modelLaporan.kesimpulan = "";
   modelLaporan.arahan = "";
+  tempImageLayer1.value = null;
+  tempImageLayer2.value = null;
+  tempImageHasil.value = null;
+};
+
+// menambahkan lampiran ke dalam array untuk nanti dipush ke firebase
+const simpanLampiran = async () => {
+  //get surat id terakhir dari firebase
+  currentId();
+
+  //cek imagenya sudah ada belum
+  if (
+    modelLaporan.imageLayer1 ||
+    modelLaporan.imageLayer2 ||
+    modelLaporan.hasil
+  ) {
+    // push modelLaporan / data yang diinput diform ke temporary loporan
+    tempLaporan.value.push({ ...modelLaporan });
+
+    // console.log(tempLaporan.value);
+    //setelah tempLaporan terisi oleh modelLaporan
+    //templaporan dimasukan ke surat.laporan
+    surat.laporan = tempLaporan.value;
+
+    if (surat.laporan) {
+      Notify.create({
+        message: "Lampiran Berhasil disimpan",
+        color: "green-8",
+      });
+      resetForm();
+    }
+  }
 };
 
 function getPathStorageFromUrl(url) {
@@ -225,8 +248,9 @@ function getPathStorageFromUrl(url) {
   return imagePath;
 }
 
-const deleteImageFromFirebase = (url) => {
-  //check ada url atau tidak
+const deleteImageFromFirebase = (layer, url) => {
+  // console.log(url);
+  // check ada url atau tidak
   if (url) {
     // Ambil path gambar dari url firebase storage dengan fungsi
     const imagePath = getPathStorageFromUrl(url);
@@ -238,15 +262,31 @@ const deleteImageFromFirebase = (url) => {
       .delete()
       .then(function () {
         console.log("image removed");
+        if (layer == "layer 1") {
+          modelLaporan.imageLayer1 = null;
+        }
+        if (layer == "layer 2") {
+          modelLaporan.imageLayer2 = null;
+        }
+        if (layer == "hasil") {
+          modelLaporan.hasil = null;
+        }
       });
   }
 };
 
 const hapusLampiran = async (index, url) => {
-  console.log(url.imageLayer1[0]);
-  deleteImageFromFirebase(url.imageLayer1[0]);
-  deleteImageFromFirebase(url.imageLayer2[0]);
-  deleteImageFromFirebase(url.hasil[0]);
+  // console.log(url);
+
+  if (url.imageLayer1 !== null) {
+    deleteImageFromFirebase(url.imageLayer1);
+  }
+  if (url.imageLayer2 !== null) {
+    deleteImageFromFirebase(url.imageLayer2);
+  }
+  if (url.hasil !== null) {
+    deleteImageFromFirebase(url.hasil);
+  }
 
   //delete index laporan
   tempLaporan.value.splice(index, 1);
@@ -256,32 +296,6 @@ const hapusLampiran = async (index, url) => {
     color: "green-8",
   });
 };
-
-let fromDB = ref([]);
-// const getSurat = async () => {
-//   db.collection("surat")
-//     // .where("state", "==", "CA")
-//     .onSnapshot((snapshot) => {
-//       snapshot.docChanges().forEach((change) => {
-//         const data = change.doc.data();
-//         if (change.type === "added") {
-//           // Object.assign({}, fromDB, change.doc.data());
-//           fromDB.value.unshift(data);
-//           // fromDB = change.doc.data()
-//           // console.log("New city: ", change.doc.data());
-//         }
-//         if (change.type === "modified") {
-//           console.log("Modified city: ", change.doc.data());
-//         }
-//         if (change.type === "removed") {
-//           console.log("Removed city: ", change.doc.data());
-//         }
-//       });
-//     });
-// };
-
-//Ambil detail surat sesuai id
-
 const detailSurat = ref([]);
 const getDetailSurat = async (docId) => {
   let data = "";
@@ -346,6 +360,9 @@ const currentId = () => {
 };
 
 export default {
+  isImageLayer1Uploaded,
+  isImageLayer2Uploaded,
+  isImageHasilUploaded,
   tempImageLayer1,
   tempImageLayer2,
   tempImageHasil,
@@ -353,6 +370,8 @@ export default {
   modelLaporan,
   surat,
   detailSurat,
+  uploadImageNgetUrl,
+  deleteImageFromFirebase,
   getDetailSurat,
   uploadImage,
   getPathStorageFromUrl,
@@ -362,10 +381,3 @@ export default {
   hapusLampiran,
   currentId,
 };
-
-// tempImage,
-// tempImageURL,
-// fromDB,
-// uploader,
-// isUploaded,
-// resetUploader,

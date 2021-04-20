@@ -229,15 +229,15 @@
 
       </q-step>
 
-      <q-step
+      <!-- <q-step
         :name="3"
         title="Finish"
         caption="Download Laporan"
         icon="download"
-      >
-        <step-3>
-        </step-3>
-      </q-step>
+      > -->
+      <!-- <step-3>
+        </step-3> -->
+      <!-- </q-step> -->
 
       <template v-slot:navigation>
         <q-stepper-navigation>
@@ -258,6 +258,7 @@
                   name="navigate_next"
                 />
               </q-btn>
+
               <q-btn
                 v-if="step > 1"
                 flat

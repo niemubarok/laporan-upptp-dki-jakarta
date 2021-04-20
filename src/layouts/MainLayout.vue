@@ -1,13 +1,13 @@
 <template>
   <q-img
     src="../../public/img/tree.png"
-    class="fixed-top"
+    class=".noprint fixed-top"
     style="opacity:1;z-index:-10;height:50vh"
   ></q-img>
 
   <q-img
     src="../../public/img/cardbg.jpg"
-    class="fixed-bottom"
+    class=".noprint fixed-bottom"
     style="opacity:0.4;z-index:-10;height:50vh"
   ></q-img>
 
@@ -16,12 +16,13 @@
   <q-layout view="lHh Lpr lFf">
 
     <q-header
-      class="bg-primary"
+      class=".noprint bg-primary"
       style="opacity:0.8;height:10.3vh"
     >
 
       <q-toolbar>
         <q-btn
+          class=".noprint "
           flat
           icon="menu"
           color="warning"
@@ -31,6 +32,7 @@
         />
 
         <q-btn
+          class=".noprint"
           flat
           icon="menu"
           color="warning"
@@ -74,7 +76,7 @@
         <add-button />
         <!-- </q-page-sticky> -->
 
-        <div class="fit row inline wrap justify-end items-start content-start">
+        <div class=".noprint fit row inline wrap justify-end items-start content-start">
           <img
             src=" /img/logojakarta.png"
             style="width:50px; height:60px;margin-right:5px;margin-top:10px;"
@@ -102,7 +104,7 @@
 
     <div
       style="height:40vh;opacity:0.8;margin-top:10.3vh"
-      class="row bg-primary fixed-top"
+      class=".noprint row bg-primary fixed-top"
     >
     </div>
 
@@ -117,10 +119,11 @@
     >
       <div
         v-if="state.miniState == false"
-        class="q-mini-drawer-hide absolute"
+        class=".noprint q-mini-drawer-hide absolute"
         style="z-index:10;bottom: 100px; right: -17px"
       >
         <q-btn
+          class=".noprint "
           dense
           unelevated
           round
@@ -133,7 +136,7 @@
 
       <div
         v-if="state.miniState == true"
-        class="q-mini-drawer-hide absolute"
+        class=".noprint q-mini-drawer-hide absolute"
         style="z-index:10;bottom: 100px; right: 1px"
       >
         <q-btn
@@ -148,10 +151,13 @@
       </div>
 
       <div
-        class="q-ma-sm"
+        class=".noprint q-ma-sm"
         style="border-radius:10px;background-color:rgb(43, 103, 171, 0.3)"
       >
-        <div :class="{margintop:state.miniState}">
+        <div
+          class=".noprint"
+          :class="{margintop:state.miniState}"
+        >
 
           <q-list style="margin-top:27px">
 

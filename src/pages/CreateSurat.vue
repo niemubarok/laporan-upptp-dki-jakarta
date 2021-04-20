@@ -243,11 +243,11 @@
             icon="download"
           >
 
-            <q-btn @click="submitSurat">
+            <!-- <q-btn @click="submitSurat">
               submit
-            </q-btn>
-            <!-- <step-3>
-        </step-3> -->
+            </q-btn> -->
+            <step-3>
+            </step-3>
           </q-step>
 
           <template v-slot:navigation>
