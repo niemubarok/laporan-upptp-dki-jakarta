@@ -106,7 +106,7 @@
         <span
           @click="dataSurat(data.docId)"
           class="listCard material-icons cursor-pointer text-h6 q-ml-sm absolute-bottom-right "
-          style="margin-right:35px;"
+          style="margin-right:45px;"
         >
           launch
           <q-tooltip>detail</q-tooltip>
@@ -227,8 +227,6 @@ export default {
 
     const { state } = ComponentState
     const router = useRouter()
-    const route = useRoute()
-
     const surat = ref([])
     const namaPohon = ref('')
     const kesimpulan = ref('')

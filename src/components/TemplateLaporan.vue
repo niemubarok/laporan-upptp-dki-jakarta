@@ -237,7 +237,7 @@ export default {
       // document.body.innerHTML = printContent
       document.body.innerHTML = restorepage
       // document.getElementById('print-button').style.visibility = 'visible'
-      // window.location.reload()
+      window.location.reload()
       // window.close()
       return false
     }

@@ -9,8 +9,6 @@
 </template>
 
 <script>
-import TemplateLaporan from 'src/components/TemplateLaporan.vue';
-import Tes from 'src/components/tes.vue';
 import { defineComponent } from 'vue';
 import Surats from '../components/Surats'
 

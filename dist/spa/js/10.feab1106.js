@@ -1,1 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([[10],{2842:function(n,t,e){"use strict";e.r(t);var c=e("7a23");function r(n,t,e,r,s,a){const o=Object(c["I"])("surats");return Object(c["A"])(),Object(c["h"])(o)}var s=e("b202"),a={components:{Surats:s["a"]}};a.render=r;t["default"]=a}}]);

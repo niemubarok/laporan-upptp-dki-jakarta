@@ -48,6 +48,7 @@ const tempImageHasil = ref(null);
 const isImageLayer1Uploaded = ref(false);
 const isImageLayer2Uploaded = ref(false);
 const isImageHasilUploaded = ref(false);
+const saved = ref(false);
 
 // const tempLaporan = [
 //   {
@@ -134,26 +135,81 @@ const getImagerURL = async (layer, tempImage) => {
   return storage.ref(file).getDownloadURL();
 };
 
+const uploading = reactive({
+  layer1: false,
+  layer2: false,
+  hasil: false,
+});
+
+const errorUpload = reactive({
+  layer1: false,
+  layer2: false,
+  hasil: false,
+});
+
 const uploadImageNgetUrl = async () => {
   //upload image ke firebase kemudian ambil urlnya
-  if (tempImageLayer1.value !== null) {
+  if (tempImageLayer1.value !== null && !isImageLayer1Uploaded.value) {
+    uploading.layer1 = true;
+    setTimeout(() => {
+      if (!modelLaporan.imageLayer1 && !saved) {
+        uploading.layer1 = false;
+        errorUpload.layer1 = true;
+        tempImageLayer1.value = null;
+        Notify.create({
+          message: "Gagal Upload Gambar Layer 1",
+          caption: "Cek koneksi Internet anda",
+          color: "red-8",
+          position: "top",
+        });
+      }
+    }, 10000);
+
     await uploadImage("Layer 1", tempImageLayer1).then((snapshot) => {
       if (snapshot.state == "success") {
         getImagerURL("Layer 1", tempImageLayer1.value.name).then(function (
           url
         ) {
-          if (url) {
+          if (!url) {
+            Notify.create({
+              message: "Gagal Upload Gambar Layer 1",
+              color: "red-8",
+              position: "top",
+            });
+            uploading.layer1 = false;
+          } else {
             modelLaporan.imageLayer1 = url;
             isImageLayer1Uploaded.value = true;
+            uploading.layer1 = false;
           }
         });
         // tempImageLayer1.value = null;
+      } else {
+        Notify.create({
+          message: "Gagal Upload Gambar Layer 1",
+          color: "red-8",
+          position: "top",
+        });
       }
     });
   }
 
   //image Layer 2
-  if (tempImageLayer2.value !== null) {
+  if (tempImageLayer2.value !== null && !isImageLayer2Uploaded.value) {
+    uploading.layer2 = true;
+    setTimeout(() => {
+      if (!modelLaporan.imageLayer2 && !saved) {
+        uploading.layer2 = false;
+        errorUpload.layer2 = true;
+        tempImageLayer2.value = null;
+        Notify.create({
+          message: "Gagal Upload Gambar Layer 2",
+          caption: "Cek koneksi Internet anda",
+          color: "red-8",
+          position: "top",
+        });
+      }
+    }, 10000);
     await uploadImage("Layer 2", tempImageLayer2).then((snapshot) => {
       if (snapshot.state == "success") {
         getImagerURL("Layer 2", tempImageLayer2.value.name).then(function (
@@ -161,6 +217,8 @@ const uploadImageNgetUrl = async () => {
         ) {
           if (url) {
             modelLaporan.imageLayer2 = url;
+            isImageLayer2Uploaded.value = true;
+            uploading.layer2 = false;
           }
         });
         // tempImageLayer1.value = null;
@@ -169,12 +227,28 @@ const uploadImageNgetUrl = async () => {
   }
   //image Hasil
 
-  if (tempImageHasil.value !== null) {
+  if (tempImageHasil.value !== null && !isImageHasilUploaded.value) {
+    uploading.hasil = true;
+    setTimeout(() => {
+      if (!modelLaporan.hasil && !saved) {
+        uploading.hasil = false;
+        errorUpload.hasil = true;
+        tempImageHasil.value = null;
+        Notify.create({
+          message: "Gagal Upload Gambar Hasil",
+          caption: "Cek koneksi Internet anda",
+          color: "red-8",
+          position: "top",
+        });
+      }
+    }, 10000);
     await uploadImage("Hasil", tempImageHasil).then((snapshot) => {
       if (snapshot.state == "success") {
         getImagerURL("Hasil", tempImageHasil.value.name).then(function (url) {
           if (url) {
             modelLaporan.hasil = url;
+            isImageHasilUploaded.value = true;
+            uploading.hasil = false;
           }
         });
         // tempImageLayer1.value = null;
@@ -202,6 +276,12 @@ const resetForm = () => {
   modelLaporan.lingkaranBatangLayer2 = "";
   modelLaporan.kesimpulan = "";
   modelLaporan.arahan = "";
+  modelLaporan.imageLayer1 = null;
+  isImageLayer1Uploaded.value = false;
+  modelLaporan.imageLayer2 = null;
+  isImageLayer2Uploaded.value = false;
+  modelLaporan.hasil = null;
+  isImageHasilUploaded.value = false;
   tempImageLayer1.value = null;
   tempImageLayer2.value = null;
   tempImageHasil.value = null;
@@ -213,27 +293,29 @@ const simpanLampiran = async () => {
   currentId();
 
   //cek imagenya sudah ada belum
-  if (
-    modelLaporan.imageLayer1 ||
-    modelLaporan.imageLayer2 ||
-    modelLaporan.hasil
-  ) {
-    // push modelLaporan / data yang diinput diform ke temporary loporan
-    tempLaporan.value.push({ ...modelLaporan });
+  // if (
+  //   modelLaporan.imageLayer1 ||
+  //   modelLaporan.imageLayer2 ||
+  //   modelLaporan.hasil
+  // ) {
+  // push modelLaporan / data yang diinput diform ke temporary loporan
+  tempLaporan.value.push({ ...modelLaporan });
 
-    // console.log(tempLaporan.value);
-    //setelah tempLaporan terisi oleh modelLaporan
-    //templaporan dimasukan ke surat.laporan
-    surat.laporan = tempLaporan.value;
+  // console.log(tempLaporan.value);
+  //setelah tempLaporan terisi oleh modelLaporan
+  //templaporan dimasukan ke surat.laporan
+  surat.laporan = tempLaporan.value;
 
-    if (surat.laporan) {
-      Notify.create({
-        message: "Lampiran Berhasil disimpan",
-        color: "green-8",
-      });
-      resetForm();
-    }
+  if (surat.laporan) {
+    Notify.create({
+      message: "Lampiran Berhasil disimpan",
+      color: "green-8",
+    });
+    saved.value = true;
+    console.log(surat.laporan);
+    resetForm();
   }
+  // }
 };
 
 function getPathStorageFromUrl(url) {
@@ -264,12 +346,15 @@ const deleteImageFromFirebase = (layer, url) => {
         console.log("image removed");
         if (layer == "layer 1") {
           modelLaporan.imageLayer1 = null;
+          isImageLayer1Uploaded.value = false;
         }
         if (layer == "layer 2") {
           modelLaporan.imageLayer2 = null;
+          isImageLayer2Uploaded.value = false;
         }
         if (layer == "hasil") {
           modelLaporan.hasil = null;
+          isImageHasilUploaded.value = false;
         }
       });
   }
@@ -360,6 +445,7 @@ const currentId = () => {
 };
 
 export default {
+  uploading,
   isImageLayer1Uploaded,
   isImageLayer2Uploaded,
   isImageHasilUploaded,
@@ -370,6 +456,7 @@ export default {
   modelLaporan,
   surat,
   detailSurat,
+  errorUpload,
   uploadImageNgetUrl,
   deleteImageFromFirebase,
   getDetailSurat,

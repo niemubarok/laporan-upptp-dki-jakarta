@@ -19,7 +19,6 @@
         namaPohon
         -->
       <q-input
-        clearable
         standout="bg-blue-10 text-yellow-14"
         v-model="modelLaporan.namaPohon"
         label="Nama Pohon"
@@ -39,7 +38,6 @@
         label="Nama Latin"
         dense
         class="q-mt-sm"
-        clearable
       >
         <template v-slot:prepend>
           <q-icon name="more" />
@@ -48,7 +46,6 @@
 
       <!-- daun -->
       <q-input
-        clearable
         standout="bg-blue-10 text-yellow-14"
         v-model="modelLaporan.daun"
         label="Daun"
@@ -62,7 +59,6 @@
 
       <!-- batang -->
       <q-input
-        clearable
         standout="bg-blue-10 text-yellow-14"
         v-model="modelLaporan.batang"
         label="Batang"
@@ -85,7 +81,6 @@
 
       <!-- akar-->
       <q-input
-        clearable
         standout="bg-blue-10 text-yellow-14"
         v-model="modelLaporan.akar"
         label="Akar"
@@ -98,7 +93,6 @@
       </q-input>
       <!-- kecepatanAngin-->
       <q-input
-        clearable
         standout="bg-blue-10 text-yellow-14"
         v-model="modelLaporan.kecepatanAngin"
         label="Kecepatan Angin"
@@ -112,7 +106,6 @@
 
       <!-- lokasi Pohon-->
       <!-- <q-input
-        clearable
         filled
         autogrow
         v-model="modelLaporan.lokasi"
@@ -128,7 +121,6 @@
 
       <!-- segmen-->
       <q-input
-        clearable
         standout="bg-blue-10 text-yellow-14"
         v-model="modelLaporan.segmen"
         label="Segmen"
@@ -142,7 +134,6 @@
 
       <!-- zona-->
       <q-input
-        clearable
         standout="bg-blue-10 text-yellow-14"
         v-model="modelLaporan.zona"
         label="Zona"
@@ -186,7 +177,6 @@
       <!-- diameter-->
       <q-input
         dense
-        clearable
         standout="bg-blue-10 text-yellow-14"
         v-model="modelLaporan.diameterLayer1"
         label="Diameter"
@@ -200,7 +190,6 @@
       <!-- tinggiBatang-->
       <q-input
         dense
-        clearable
         standout="bg-blue-10 text-yellow-14"
         v-model="modelLaporan.tinggiBatangLayer1"
         label="Tinggi Batang"
@@ -214,7 +203,6 @@
       <!-- lingkaranBatang-->
       <q-input
         dense
-        clearable
         standout="bg-blue-10 text-yellow-14"
         v-model="modelLaporan.lingkaranBatangLayer1"
         label="Lingkaran Batang"
@@ -269,7 +257,6 @@
       <!-- diameter-->
       <q-input
         dense
-        clearable
         standout="bg-blue-10 text-yellow-14"
         v-model="modelLaporan.diameterLayer2"
         label="Diameter"
@@ -283,7 +270,6 @@
       <!-- tinggiBatang-->
       <q-input
         dense
-        clearable
         standout="bg-blue-10 text-yellow-14"
         v-model="modelLaporan.tinggiBatangLayer2"
         label="Tinggi Batang"
@@ -297,7 +283,6 @@
       <!-- lingkaranBatang-->
       <q-input
         dense
-        clearable
         standout="bg-blue-10 text-yellow-14"
         v-model="modelLaporan.lingkaranBatangLayer2"
         label="Lingkaran Batang"
@@ -336,7 +321,6 @@
 
       <!-- Kesimpulan-->
       <q-input
-        clearable
         autogrow
         filled
         v-model="modelLaporan.kesimpulan"
@@ -351,7 +335,6 @@
 
       <!-- arahan-->
       <q-input
-        clearable
         filled
         autogrow
         v-model="modelLaporan.arahan"
@@ -371,10 +354,10 @@
       >
       </q-page-sticky> -->
 
-      laporan1 {{tempLaporan[0]}}
+      <!-- laporan1 {{tempLaporan[0]}}
       <hr>
       laporan2 {{tempLaporan[1]}}
-      <hr>
+      <hr> -->
       <!-- {{modelLaporan.imageLayer2}}
       <hr>
       {{modelLaporan.hasil}} -->

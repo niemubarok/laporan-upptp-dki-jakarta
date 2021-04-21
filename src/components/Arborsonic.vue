@@ -155,32 +155,23 @@
           </th>
         </tr>
         <tr style="height:100px;text-align:center">
-          <!-- class="items-center" -->
-          <!-- id="image" -->
           <td
             colspan="3"
             id="image"
           >
             <!-- {{image(data.imageLayer1[0])}} -->
             <img
-              style="max-height:120px; width:50%;"
+              style="height:120px; max-width:200px;"
               :src="data.imageLayer1"
             />
-            <!-- v-if="data.imageLayer1" -->
-            <!-- <div
-              style="max-height:120px; width:50%;"
-            >
-
-            </div> -->
-            <!-- {{image(data.imageLayer1[0])}} -->
           </td>
           <td colspan="3"><img
               :src="data.imageLayer2"
-              style="max-height:120px; width:50%;"
+              style="height:120px; max-width:200px;"
             /></td>
           <td><img
               :src="data.hasil"
-              style="max-height:120px; width:50%;"
+              style="height:120px; max-width:200px;"
             /></td>
         </tr>
         <tr
@@ -314,37 +305,9 @@
 </template>
 
 <script>
-import { ref } from 'vue'
 export default {
-
   props: ['data', 'surat'],
-  setup (props) {
-
-    const image = (url) => {
-      let imageId = document.getElementById("image")
-      if (imageId) {
-        // let ctx = imageId[0].getContext("2d")
-        let img = document.createElement('img')
-        img.src = url
-        // let getImg = document.get
-        // imageId.drawImage(img, 10, 10)
-      }
-      // img.download = "public/img/image.png"
-      // let canvas = document.cre
-      // console.log(img);
-      // console.log(document.getElementById("image"));
-      // if (imageId) {
-      //   let blob = new Blob([img])
-      //   console.log(blob);
-      //   // imageId.appendChild(blob).style.width = '100px'
-      //   // imageId.style.width = '100px'
-
-      // }
-
-    }
-
-
-
+  setup () {
 
     const base64Encode = (url) => {
       const encodedurl = window.btoa(url)
@@ -353,7 +316,6 @@ export default {
 
 
     return {
-      image,
       base64Encode
     }
   }
@@ -394,9 +356,9 @@ th {
   vertical-align: middle;
 }
 
-td,
-th {
-  padding-left: 5px;
-  padding-right: 5px;
-}
+/* td,
+th { */
+/* padding-left: 5px;
+  padding-right: 5px; */
+/* } */
 </style>

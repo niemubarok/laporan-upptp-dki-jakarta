@@ -1,7 +1,7 @@
 <template>
+  <!-- v-if="surat" -->
   <q-card
     id="content"
-    v-if="detail[0]"
     class="q-pa-md no-shadow q-ma-md"
   >
     <div class="row justify-start">
@@ -35,15 +35,15 @@
     <div class="row justify-between q-mt-lg">
       <div class="col-4">
         <p style="font-size:11pt;">
-          Nomor &ensp; &ensp;: {{detail[0].noSurat}}<br />
+          Nomor &ensp; &ensp;: {{surat.noSurat}}<br />
           Sifat &emsp; &emsp;: Penting<br />
-          Lampir &emsp; : {{detail[0].laporan.length}} lembar<br />
+          Lampir &emsp; : {{surat.laporan.length}} lembar<br />
           Perihal &emsp; : Laporan Hasil <br>
           <span style="margin-left:75px;">Pemeriksaan Pohon</span><br />
         </p>
       </div>
       <div class="col-4">
-        <p style="text-align:right"> {{detail[0].tglSurat}}</p>
+        <p style="text-align:right"> {{surat.tglSurat}}</p>
       </div>
     </div>
     <div
@@ -65,7 +65,7 @@
     </div>
     <div style="margin-left:100px;">
       <p style="font-size:11pt;text-align:justify">
-        &emsp;&emsp;Bersama ini disampaikan laporan hasil pemeriksaan kesehatan pohon, sehubungan dengan surat permohonan izin penebangan Pohon dari Ka Unit PMPTSP Kelurahan {{detail[0].kelurahan}} No.{{detail[0].noSPIPP}} tanggal {{detail[0].tglSurat}} a.n. {{detail[0].namaKaUnit}} di {{detail[0].alamatPMPTSP}} Kota Administrasi Jakarta Selatan, pada tanggal {{detail[0].tanggalTerimaSurat}} sebanyak {{}} pohon sebagai berikut, (hasil terlampir):
+        &emsp;&emsp;Bersama ini disampaikan laporan hasil pemeriksaan kesehatan pohon, sehubungan dengan surat permohonan izin penebangan Pohon dari Ka Unit PMPTSP Kelurahan {{surat.kelurahan}} No.{{surat.noSPIPP}} tanggal {{surat.tglSurat}} a.n. {{surat.namaKaUnit}} di {{surat.alamatPohon}} Kota Administrasi Jakarta Selatan, pada tanggal {{surat.tanggalTerimaSurat}} sebanyak {{}} pohon sebagai berikut, (hasil terlampir):
       </p>
     </div>
     <div class="row">
@@ -83,14 +83,14 @@
           <th class="q-px-md">Keterangan</th>
         </tr>
         <tr
-          v-for="(row, key) in detail[0].laporan"
+          v-for="(row, key) in surat.laporan"
           :key="key"
-          :is="detail[0]"
+          :is="surat"
         >
           <td>{{(key + 1)}}</td>
           <td>
 
-            {{detail[0].alamatPohon}}
+            {{surat.alamatPohon}}
           </td>
           <td>{{row['namaPohon']}}</td>
           <td>{{row['diameterLayer2']}}</td>
@@ -135,18 +135,18 @@
   </q-card>
   <div class="pagebreak"></div>
   <template
-    v-if="detail[0]"
-    v-for="laporan in detail[0].laporan "
+    v-if="surat"
+    v-for="laporan in surat.laporan "
   >
     <arborsonic
       :data="laporan"
-      :surat='detail[0]'
+      :surat='surat'
     />
 
   </template>
 
   <!-- SKELETON -->
-  <div v-if="!state.loaded">
+  <div v-if="!surat">
     <q-card
       class="q-ma-sm"
       data-html2canvas-ignore="true"
@@ -272,6 +272,7 @@ export default {
       state,
       print,
       imageUrl,
+      surat
       // generateReport,
     }
   }

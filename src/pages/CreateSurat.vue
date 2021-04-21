@@ -255,15 +255,14 @@
               <div class="column">
                 <div class="q-gutter-sm self-end text-secondary">
                   <q-btn
-                    @click="[$refs.stepper.next()
-                 ]"
+                    @click="nextStep"
                     color="primary"
                     text-color="secondary"
-                    :label="state.step === 3 ? 'Selesai' : 'Selanjutnya'"
+                    :label="state.step === 3 ? 'Submit' : 'Selanjutnya'"
                     rounded
                     class=" fixed-bottom-right z-top q-mb-md"
                     :class="!$q.screen.lt.md ? 'absolute-bottom-right' : '' "
-                    :disable="modelLaporan.namaPohon !== '' && modelLaporan.kesimpulan !== '' &&state.step == 2"
+                    :disable="modelLaporan.namaPohon !== '' && modelLaporan.kesimpulan !== '' &&state.step == 2 || Object.keys(tempLaporan).length == 0 && state.step == 2"
                   >
                     <!-- :disable="Object.keys(tempLaporan).length == 0 && state.step == 2" -->
                     <q-icon
@@ -349,9 +348,7 @@
 </template>
 <script>
 import { useQuasar } from 'quasar'
-import { ref, onBeforeMount } from 'vue'
-import { createSurat } from 'src/db/surat'
-import { db } from "src/firebase";
+import { computed, onBeforeMount } from 'vue'
 import Step2 from '../components/Step2'
 import Step3 from '../components/Step3'
 import DataSurat from '../global/DataSurat'
@@ -379,6 +376,14 @@ export default {
       currentId()
     })
 
+    const nextStep = computed(() => {
+      if (state.step <= 2) {
+        state.step = state.step + 1
+      } else if (state.step == 3) {
+        submitSurat()
+      }
+    })
+
     return {
       modelLaporan,
       surat,
@@ -389,6 +394,7 @@ export default {
       submitSurat,
       // currentId,
       state,
+      nextStep
 
 
     }
