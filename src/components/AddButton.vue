@@ -4,7 +4,7 @@
   <q-btn
     color="amber"
     round
-    class="addButton q-pa-sm index-top shadow-5"
+    class=" noprint addButton q-pa-sm index-top shadow-5"
     glossy
     to="/surat/create"
   >

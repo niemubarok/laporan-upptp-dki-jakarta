@@ -92,25 +92,25 @@
       v-for="(data, index) of surat"
       :key="data.surat_id"
     >
-
+      <!-- :style="
+        $q.screen.lt.sm
+        ? 'height:auto; max-height:30vh'
+        :''" -->
       <q-card
         class="listCard q-ma-md bg-grey-4 rounded-borders "
         :class="$q.screen.lt.sm ? 'full-width q-ma-md q-ml-md':''"
-        style="width:30vh; height:35vh;"
-        :style="
-        $q.screen.lt.sm
-        ? 'height:auto; max-height:30vh'
-        :''"
+        style="width:30vh; height:35vh;display:block"
       >
+        <!-- @click.prevent="dataSurat(data.docId)" -->
 
-        <span
+        <btn
           @click="dataSurat(data.docId)"
           class="listCard material-icons cursor-pointer text-h6 q-ml-sm absolute-bottom-right "
           style="margin-right:45px;"
         >
           launch
           <q-tooltip>detail</q-tooltip>
-        </span>
+        </btn>
 
         <q-fab
           style="margin-right:-15px;margin-bottom:-10px;"
@@ -289,7 +289,9 @@ export default {
 </script>
 
 <style>
-.listCard:hover {
-  transform: scale(1.1);
+@media only screen and (min-width: 700px) {
+  .listCard:hover {
+    transform: scale(1.1);
+  }
 }
 </style>

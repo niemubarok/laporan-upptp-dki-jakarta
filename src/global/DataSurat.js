@@ -1,7 +1,7 @@
 import { reactive, ref, toRefs } from "vue";
 import { db, storage } from "src/firebase";
 import { createSurat, getSurat } from "../db/surat";
-import { Notify } from "quasar";
+import { Notify, useQuasar } from "quasar";
 
 const modelLaporan = reactive({
   // laporan_id: null,
@@ -293,15 +293,9 @@ const simpanLampiran = async () => {
   currentId();
 
   //cek imagenya sudah ada belum
-  // if (
-  //   modelLaporan.imageLayer1 ||
-  //   modelLaporan.imageLayer2 ||
-  //   modelLaporan.hasil
-  // ) {
   // push modelLaporan / data yang diinput diform ke temporary loporan
   tempLaporan.value.push({ ...modelLaporan });
 
-  // console.log(tempLaporan.value);
   //setelah tempLaporan terisi oleh modelLaporan
   //templaporan dimasukan ke surat.laporan
   surat.laporan = tempLaporan.value;
@@ -310,6 +304,7 @@ const simpanLampiran = async () => {
     Notify.create({
       message: "Lampiran Berhasil disimpan",
       color: "green-8",
+      position: "top-right",
     });
     saved.value = true;
     console.log(surat.laporan);
@@ -379,6 +374,7 @@ const hapusLampiran = async (index, url) => {
   Notify.create({
     message: "Lampiran " + (index + 1) + " Berhasil diHapus",
     color: "green-8",
+    position: "top-right",
   });
 };
 const detailSurat = ref([]);
@@ -391,6 +387,7 @@ const getDetailSurat = async (docId) => {
 };
 
 //--------Submit Surat ke firebase ----------//
+const submitted = ref(false);
 const submitSurat = async () => {
   try {
     //upload surat ke firebase
@@ -414,6 +411,7 @@ const submitSurat = async () => {
         surat_id: surat.surat_id,
       })
       .then(() => {
+        submitted.value = true;
         console.log("sukses");
       })
       .catch((e) => {
@@ -445,6 +443,7 @@ const currentId = () => {
 };
 
 export default {
+  submitted,
   uploading,
   isImageLayer1Uploaded,
   isImageLayer2Uploaded,

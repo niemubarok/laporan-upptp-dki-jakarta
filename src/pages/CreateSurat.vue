@@ -66,8 +66,11 @@
             <!-- <q-btn @click="submitSurat">
               submit
             </q-btn> -->
-            <step-3>
-            </step-3>
+            <div id="content">
+
+              <step-3>
+              </step-3>
+            </div>
           </q-step>
 
           <template v-slot:navigation>
@@ -75,11 +78,13 @@
               <div class="column">
                 <div class="q-gutter-sm self-end text-secondary">
                   <q-btn
+                    v-if="!submitted"
                     @click="nextStep"
                     color="primary"
                     text-color="secondary"
                     :label="state.step === 3 ? 'Submit' : 'Selanjutnya'"
                     rounded
+                    style="width:180px"
                     class=" fixed-bottom-right z-top q-mb-md"
                     :class="!$q.screen.lt.md ? 'absolute-bottom-right' : '' "
                     :disable="modelLaporan.namaPohon !== '' && modelLaporan.kesimpulan !== '' &&state.step == 2 || Object.keys(tempLaporan).length == 0 && state.step == 2"
@@ -112,8 +117,8 @@
                     </q-tooltip>
                   </q-btn>
 
-                  <!-- <q-btn
-                    v-if="state.step > 1"
+                  <q-btn
+                    v-if="state.step == 2"
                     @click="[simpanLampiran(), state.seamless = true]"
                     fab
                     icon="save"
@@ -130,7 +135,27 @@
                     >
                       SIMPAN LAMPIRAN
                     </q-tooltip>
-                  </q-btn> -->
+                  </q-btn>
+
+                  <q-btn
+                    v-if="state.step == 3 && submitted"
+                    @click="print"
+                    fab
+                    icon="print"
+                    color="orange-14"
+                    style="right:160px"
+                    class=" fixed-bottom-right z-top q-mb-sm"
+                    :class="!$q.screen.lt.md ? 'absolute-bottom-right' : '' "
+                  >
+                    <q-tooltip
+                      anchor="top middle"
+                      self="bottom middle"
+                      class="bg-indigo"
+                      :offset="[10, 10]"
+                    >
+                      Print Surat
+                    </q-tooltip>
+                  </q-btn>
 
                   <!-- @click="state.step - 1" -->
                   <q-btn
@@ -191,9 +216,10 @@ export default {
       surat,
       tempLaporan,
       tempImageURL,
-      // simpanLampiran,
+      simpanLampiran,
       submitSurat,
-      currentId, } = DataSurat
+      currentId,
+      submitted } = DataSurat
 
     onBeforeMount(() => {
       currentId()
@@ -207,17 +233,33 @@ export default {
       }
     }
 
+    const print = () => {
+      // let w = window.open()
+      // w.document.write(document.getElementById('content').innerHTML)
+      let restorepage = document.body.innerHTML
+      let printContent = document.getElementById('content').innerHTML
+      // document.getElementById('print-button').style.visibility = 'hidden'
+      document.body.innerHTML = printContent
+      window.print()
+      document.body.innerHTML = restorepage
+      // document.getElementById('print-button').style.visibility = 'visible'
+      window.location.reload()
+      // window.close()
+    }
+
     return {
       modelLaporan,
       surat,
       tempLaporan,
       tempImageURL,
-      // simpanLampiran,
+      simpanLampiran,
       // onSubmit,
       submitSurat,
+      submitted,
       // currentId,
       state,
-      nextStep
+      nextStep,
+      print
 
 
     }

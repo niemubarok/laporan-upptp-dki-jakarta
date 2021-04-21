@@ -190,11 +190,11 @@
 
   </div>
 
-  <q-btn
+  <!-- <q-btn
     id="print-button"
     class="noprint fixed-bottom-right bg-primary text-white q-mb-md q-mr-md"
     @click="print"
-  >Buat PDF</q-btn>
+  >Buat PDF</q-btn> -->
 </template>
 
 <script>
@@ -210,34 +210,26 @@ export default {
   components: { Arborsonic },
   setup () {
     const route = useRoute()
-    const docId = route.params.id
     const detail = ref([])
     const imageUrl = ref('')
     const { state } = ComponentState
     const { surat } = DataSurat
 
-    console.log(surat);
-
-    // onMounted(() => {
-    // })
-
     // const print = () => {
-    //   let restorepage = document.body.innerHTML
-    //   // window.open('', 'content', 'height=400,width=600')
-    //   let printContent = document.getElementById('content').outerHTML
-
-    //   // document.getElementsByTagName('table')[0].setAttribute('style', 'widt  h:142%')
-
-    //   // document.getElementById('print-button').style.visibility = 'hidden'
-    //   document.body.innerHTML = printContent
-    //   window.print()
-    //   // document.body.innerHTML = printContent
-    //   document.body.innerHTML = restorepage
-    //   // document.getElementById('print-button').style.visibility = 'visible'
-    //   // window.location.reload()
-    //   // window.close()
-    //   return false
+    //   let w = window.open()
+    //   w.print()
+    //   w.close()
     // }
+
+    // document.getElementsByTagName('table')[0].setAttribute('style', 'widt  h:142%')
+
+    // let restorepage = document.body.innerHTML
+    //  let printContent = ocument.getElementById('content').innerHTML)
+    // document.getElementById('print-button').style.visibility = 'hidden'
+    // document.body.innerHTML = printContent
+    // document.body.innerHTML = restorepage
+    // document.getElementById('print-button').style.visibility = 'visible'
+    // window.location.reload()
 
 
     // const generateReport = () => {

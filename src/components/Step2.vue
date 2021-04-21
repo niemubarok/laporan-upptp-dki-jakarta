@@ -367,7 +367,7 @@
 
   </div>
 
-  <q-btn
+  <!-- <q-btn
     v-if="state.step > 1"
     @click="[simpanLampiran(), state.seamless = true]"
     fab
@@ -385,7 +385,7 @@
     >
       SIMPAN LAMPIRAN
     </q-tooltip>
-  </q-btn>
+  </q-btn> -->
 
 </template>
 

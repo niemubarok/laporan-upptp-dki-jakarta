@@ -62,7 +62,6 @@
 import TemplateLaporan from 'src/components/TemplateLaporan.vue'
 import ComponentState from '../global/ComponentState'
 import html2pdf from 'html2pdf.js'
-import { ref } from 'vue'
 
 import { useQuasar } from 'quasar'
 
